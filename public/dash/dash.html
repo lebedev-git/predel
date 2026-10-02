@@ -104,7 +104,7 @@
   <div class="card" style="margin-bottom:16px"><div class="hd"><h2 id="devT"></h2></div><div id="devBars"></div><div class="tbl" id="devs" style="max-height:420px;margin-top:8px"></div></div>
   <div class="src">Дети: bus.gov.ru (госзадания 2018–2025), edu.tatar.ru (2026), Татарстанстат (возраст на 01.01.2024). Места: новости мэрии и СМИ о вводе школ, остальное — оценка по площади зданий OSM.
     Новые дома: реестр Инспекции госстройнадзора РТ на 18.09.2026; дети = квартиры (если не указаны — 250–400) × дети на квартиру района.<br>
-    Проверка на истории: ученики Казани 2002–2015 — Росстат, 2016–2026 — мэрия и Минобрнауки РТ; рождения — Росстат и Татарстанстат; район — госзадания bus.gov.ru, 2026 — edu.tatar.ru.</div>
+    «Вся Казань», школы: официальный ряд — Росстат 2002–2015, мэрия и Минобрнауки РТ 2016–2026 (районы — по школам edu.tatar.ru, 97,5% учеников города); проверка на истории — тот же ряд; рождения — Росстат и Татарстанстат; район — госзадания bus.gov.ru, 2026 — edu.tatar.ru.</div>
 </div>
 <div id="ov"></div><aside id="pn"></aside>
 
@@ -174,7 +174,14 @@ function scope() {  // всё, что рисуем, для текущих фил
   const sum = DN.map(d => forecast(d, t)), fs = DN.map(d => fact(d, t))  // город = сумма семи районов (те же источники)
   const fc = Object.fromEntries(YRS.map(y => [y, ['mid', 'lo', 'hi', 'dm', 'nw', 'p26'].reduce((o, k) => (o[k] = sum.reduce((a, f) => a + f[y][k], 0), o), {})]))
   const yrs = Object.keys(fs[0]).map(Number).filter(y => fs.every(f => f[y] != null))  // только годы, где есть все районы
-  return { fact: Object.fromEntries(yrs.map(y => [y, fs.reduce((a, f) => a + f[y], 0)])), fc, x0: 2020, x1: 2030 }
+  const sum0 = Object.fromEntries(yrs.map(y => [y, fs.reduce((a, f) => a + f[y], 0)]))
+  // Город, школы: официальный ряд (Росстат 2002–2015, мэрия 2016–2026) — тот же, что в «Проверке на истории».
+  // Сумма школ edu.tatar.ru — 97,5% официальной цифры (у 12 школ нет данных о контингенте) → прогноз, разложение и места × F.
+  const off = t === 'school' && VAL?.city?.fact
+  if (!off || !off[2026] || !sum0[2026]) return { fact: sum0, fc, x0: 2020, x1: 2030, F: 1 }
+  const F = off[2026] / sum0[2026]
+  const fcF = Object.fromEntries(Object.entries(fc).map(([y, r]) => [y, Object.fromEntries(Object.entries(r).map(([k, v]) => [k, v * F]))]))
+  return { fact: Object.fromEntries(Object.entries(off).filter(([y]) => y >= 2020 && y <= 2026).map(([y, v]) => [+y, v])), fc: fcF, x0: 2020, x1: 2030, F }
 }
 
 // ---------- графики
@@ -313,7 +320,8 @@ if (VAL) renderVal(VAL)
 function render() {
   const t = S.t, Y = S.y, city = S.d === 'Казань', sc = scope(), col = COL[t]
   const KID = t === 'school' ? 'учеников' : 'детей в садах'
-  const v26 = sc.fact[2026], vY = sc.fc[Y].mid, pl = places(t, S.d)
+  const v26 = sc.fact[2026], vY = sc.fc[Y].mid, pl0 = places(t, S.d)
+  const pl = pl0 && sc.F && sc.F !== 1 ? Object.fromEntries(Object.entries(pl0).map(([y, v]) => [y, v * sc.F])) : pl0  // места — в том же масштабе, что ученики
   document.getElementById('kpi').innerHTML = `
     <div><div class="cap">${KID[0].toUpperCase() + KID.slice(1)}, ${Y} — прогноз</div><div class="val" style="color:${col}">${n(vY)}</div></div>
     <div><div class="cap">${KID[0].toUpperCase() + KID.slice(1)}, 2026 — факт</div><div class="val">${n(v26)}</div></div>

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<title>ПРЕДЕЛ · Как считаем</title>
+<style>
+  body { margin: 0; background: #f4f5fb; font-family: Inter, 'Segoe UI', Arial, sans-serif; color: #1b1740; }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 18px 28px 28px; box-sizing: border-box; }
+  header { display: flex; align-items: baseline; gap: 22px; margin-bottom: 14px; }
+  header h1 { font-size: 30px; font-weight: 800; letter-spacing: .5px; margin: 0; }
+  header span { font-size: 17px; font-weight: 600; }
+  header nav { margin-left: auto; display: flex; gap: 6px; align-self: center; }
+  header nav a, header nav b { font-size: 13.5px; padding: 7px 13px; border-radius: 9px; border: 1px solid #e3e1f0; background: #fff; color: #5b3cc4; text-decoration: none; }
+  header nav b { background: #1b1740; border-color: #1b1740; color: #fff; }
+  .card { background: #fff; border-radius: 16px; padding: 18px 20px; box-shadow: 0 1px 2px rgba(27, 23, 64, .06); }
+  .filters { display: flex; flex-wrap: wrap; gap: 26px; align-items: flex-end; margin-bottom: 16px; position: sticky; top: 0; z-index: 20; box-shadow: 0 6px 18px rgba(27, 23, 64, .10); }
+  .filters label { display: block; font-size: 12.5px; color: #6b6890; margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips a { font-size: 13.5px; padding: 7px 13px; border-radius: 9px; border: 1px solid #e3e1f0; cursor: pointer; background: #fff; }
+  .chips a.on { background: #5b3cc4; border-color: #5b3cc4; color: #fff; font-weight: 600; }
+  .yr { flex: 1; min-width: 180px; }
+  .yr input { width: 100%; accent-color: #5b3cc4; margin: 4px 0 0; cursor: pointer; }
+  .yr .ticks { display: flex; justify-content: space-between; font-size: 12px; color: #8a87a8; padding: 0 2px; }
+  .yr label b { color: #5b3cc4; font-size: 15px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  .sec { font-size: 20px; margin: 4px 0 12px; }
+  .grid { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-bottom: 16px; }
+  .legend { font-size: 12.5px; color: #6b6890; display: flex; gap: 16px; margin: -6px 0 8px; }
+  .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .vk { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 18px; margin-bottom: 12px; }
+  .vk b { display: block; font-size: 34px; font-weight: 800; line-height: 1.15; }
+  .vk span, .vn { font-size: 13px; color: #6b6890; }
+  .vn { margin-top: 4px; }
+  .src { font-size: 11px; color: #8a87a8; line-height: 1.5; }
+  svg text { font-family: inherit; }
+  b, .st { font-variant-numeric: tabular-nums; }
+
+  /* четыре шага формулы — в ряд слева направо */
+  .steps { display: grid; grid-template-columns: 1fr 26px 1.3fr 26px 1fr 26px 1fr; gap: 6px; margin-bottom: 16px; }
+  .ar { align-self: center; text-align: center; font-size: 28px; font-weight: 700; color: #b4aed6; }
+  .st { display: flex; flex-direction: column; min-width: 0; padding: 16px 18px; }
+  .st.nw { box-shadow: inset 0 0 0 2px #2f9e57; }
+  .sh { display: flex; gap: 10px; align-items: flex-start; min-height: 46px; margin-bottom: 12px; }
+  .no { flex: none; width: 30px; height: 30px; border-radius: 50%; color: #fff; font-weight: 800; font-size: 15px; display: grid; place-items: center; }
+  .sh h3 { font-size: 16.5px; margin: 3px 0 0; line-height: 1.25; }
+  .sh .sub { font-size: 13px; color: #6b6890; margin-top: 2px; }
+  .yy { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 8px; }
+  .yy span { display: block; font-size: 12.5px; color: #6b6890; margin-bottom: 2px; }
+  .yy b { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  .yy i { font-style: normal; font-size: 22px; color: #b4aed6; font-weight: 700; padding-bottom: 2px; }
+  .pr { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; font-size: 12.5px; color: #6b6890; }
+  .pill { font-size: 14px; font-weight: 700; padding: 4px 10px; border-radius: 8px; }
+  .chain { display: flex; align-items: stretch; gap: 3px; }
+  .chain i { font-style: normal; align-self: center; font-size: 17px; font-weight: 700; color: #8a87a8; width: 12px; text-align: center; flex: none; }
+  .pq { flex: 1 1 0; min-width: 0; background: #f6f5fb; border-radius: 10px; padding: 8px 4px 7px; text-align: center; }
+  .pq b { display: block; font-size: 21px; font-weight: 800; }
+  .pq span { display: block; font-size: 12px; color: #6b6890; line-height: 1.2; margin-top: 2px; }
+  .hr { display: flex; align-items: baseline; gap: 8px; margin-top: 10px; font-size: 13.5px; color: #4b4870; }
+  .hr i { font-style: normal; font-weight: 700; color: #8a87a8; font-size: 18px; } .hr b { font-size: 26px; font-weight: 800; color: #2f9e57; }
+  .tot { margin-top: 12px; font-size: 14px; } .tot b { font-size: 20px; color: #2f9e57; }
+  .rc > div { display: grid; grid-template-columns: 16px 1fr auto; align-items: baseline; gap: 6px; padding: 7px 0; border-top: 1px solid #f0eef8; font-size: 14px; }
+  .rc > div:first-child { border-top: 0; }
+  .rc > div.eq { border-top: 2px solid #1b1740; }
+  .rc i { font-style: normal; font-weight: 700; color: #8a87a8; font-size: 17px; }
+  .rc b { font-size: 21px; font-weight: 800; text-align: right; }
+  .rc .eq b { font-size: 26px; }
+  .rc em { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; }
+  .viz { margin-top: auto; padding-top: 14px; }
+  .vc { font-size: 12px; color: #6b6890; margin-bottom: 4px; }
+  .viz svg { display: block; max-width: 420px; }
+  .hb { display: grid; grid-template-columns: 50px 1fr 54px; align-items: center; gap: 8px; margin: 8px 0; font-size: 12.5px; color: #4b4870; }
+  .hb b { font-size: 12.5px; text-align: right; color: #1b1740; }
+  .hb > div { display: flex; height: 20px; border-radius: 4px; overflow: hidden; background: #f4f3fa; }
+  .hb > div i { display: block; height: 100%; }
+  .note { font-size: 11.5px; color: #8a87a8; margin-top: 8px; }
+  @media (max-width: 1100px) {
+    .steps { grid-template-columns: 1fr 26px 1fr; row-gap: 16px; }
+    .ar.m2 { display: none; }
+  }
+</style>
+<div class="wrap">
+  <header><h1>ПРЕДЕЛ</h1><span>Как считаем прогноз</span>
+    <nav><a href="/dash/dash.html">Графики</a><b>Как считаем</b><a href="/?view=107">3D: гимназия № 107</a><a href="/?view=empty">Новый ЖК</a></nav></header>
+
+  <div class="card filters">
+    <div><label>Район</label><div class="chips" id="fd"></div></div>
+    <div><label>Тип</label><div class="chips" id="ft"></div></div>
+    <div class="yr"><label>Год прогноза: <b id="yv"></b></label><input type="range" id="fy" min="2027" max="2030" step="1">
+      <div class="ticks"><span>2027</span><span>2028</span><span>2029</span><span>2030</span></div></div>
+  </div>
+
+  <div class="steps">
+    <div class="card st" id="s1"></div><div class="ar">→</div>
+    <div class="card st nw" id="s2"></div><div class="ar m2">→</div>
+    <div class="card st" id="s3"></div><div class="ar">→</div>
+    <div class="card st" id="s4"></div>
+  </div>
+
+  <div id="val" hidden><h2 class="sec">Почему можно верить</h2>
+    <div class="grid"><div class="card" id="vCity"></div><div class="card" id="vDist"></div></div></div>
+
+  <div class="src">Ученики: edu.tatar.ru (2026), bus.gov.ru (2018–2025); «Вся Казань», школы — официальный ряд мэрии и Минобрнауки РТ. Дети по возрасту: Татарстанстат.
+    Новые дома: реестр Госстройнадзора РТ на 18.09.2026; пример — дом на 320 квартир (середина диапазона 250–400).
+    Волна по возрасту дома — калькулятор GGR министерства Бранденбурга (многоквартирные дома); в сад ходят 70 из 100 детей 1–6 лет.
+    Места: проекты и оценка по площади зданий OSM; строящиеся — с года открытия.</div>
+</div>
+
+<script type="module">
+const get = (f, def) => fetch(f, { cache: 'no-store' }).then(r => r.ok ? r.json() : def).catch(() => def)
+const [DATA, FM, DD, PLAN, VAL] = await Promise.all([get('charts.json'), get('formula.json'), get('dash_data.json', {}), get('planned.json', []), get('validation.json', null)])
+const I = m => Object.fromEntries(Object.entries(m || {}).map(([k, v]) => [+k, v]))
+const DIST = DATA.districts, NEW = DATA.new, DN = Object.keys(DIST)
+const COL = { school: '#5b3cc4', kg: '#e07a2e', new: '#2f9e57' }, LIGHT = { school: '#bdb2f2', kg: '#f6cba8' }
+const P = new URLSearchParams(location.search), d0 = P.get('d')
+const S = { d: d0 === 'Казань' || DN.includes(d0) ? d0 : 'Советский', t: P.get('t') === 'kg' ? 'kg' : 'school', y: Math.min(Math.max(+(P.get('y') || 2030), 2027), 2030) }
+const YRS = [2027, 2028, 2029, 2030]
+const n = v => Math.round(v).toLocaleString('ru-RU')
+const sg = v => (Math.round(v) > 0 ? '+' : Math.round(v) < 0 ? '−' : '') + n(Math.abs(v))
+const pc = v => (v > 0.0005 ? '+' : v < -0.0005 ? '−' : '') + Math.abs(v * 100).toFixed(1).replace('.', ',') + '%'
+const dec = v => v.toFixed(2).replace('.', ',')
+const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i)
+const plural = (v, f) => { const a = Math.abs(Math.round(v)) % 100, b = a % 10; return f[a > 10 && a < 20 ? 2 : b === 1 ? 0 : b >= 2 && b <= 4 ? 1 : 2] }
+const GREY = '#8f8ca8', RED = '#c0504d', GREEN = '#2f9e57'
+
+// ---------- места (как в dash.html): реестр мест dash_data.json + строящиеся planned.json с года открытия
+const CAP = DD.cap || {}, HASCAP = Object.keys(CAP).length > 0
+const planOf = (t, d) => PLAN.filter(p => p.kind === t && (d === 'Казань' || p.district === d))
+const planned = (t, d) => Object.fromEntries(range(2020, 2030).map(y => [y, planOf(t, d).filter(p => p.capacity && p.year && p.year <= y).reduce((a, p) => a + p.capacity, 0)]))
+const ORGS = DATA.orgs.map(o => ({ ...o, key: o.inn + ':' + o.type }))
+const capY = (o, y) => {
+  const c = CAP[o.key]; if (!c) return null
+  return (c.parts?.length ? c.parts : [{ capacity: c.capacity }]).reduce((a, p) => a + (p.opened == null || p.opened <= y ? p.capacity : 0), 0)
+}
+function places(t, d) {
+  if (!HASCAP) return null
+  const os = ORGS.filter(o => o.type === t && (d === 'Казань' || o.district === d))
+  return Object.fromEntries(range(2020, 2030).map(y => [y, os.reduce((a, o) => a + (capY(o, Math.min(y, 2026)) || 0), 0)]))
+}
+
+// ---------- модель (как в dash.html): прогноз = 2026 × дети района + новые дома
+function fact(d, t) {
+  const out = {}
+  for (const [y, r] of Object.entries(I(DIST[d][t]))) if (y >= 2020 && r.n && r.cover >= 0.6) out[y] = r.sum
+  return out
+}
+function forecast(d, t) {
+  const P26 = fact(d, t)[2026], K = I(DIST[d][t === 'school' ? 'kids_7_17' : 'kids_1_6']), nw = I(NEW[d]?.[t])
+  const share = t === 'school' ? Math.min(P26 / (K[2026] * 0.96), 1) : 1
+  return Object.fromEntries(YRS.map(y => {
+    const base = P26 * K[y] / K[2026], a = i => share * (nw[y]?.[i] || 0)
+    return [y, { mid: base + a(1), lo: base + a(0), hi: base + a(2), dm: base - P26, nw: a(1), p26: P26 }]
+  }))
+}
+function scope() {
+  const t = S.t
+  if (S.d !== 'Казань') return { fc: forecast(S.d, t) }
+  const sum = DN.map(d => forecast(d, t)), fs = DN.map(d => fact(d, t))
+  const fc = Object.fromEntries(YRS.map(y => [y, ['mid', 'lo', 'hi', 'dm', 'nw', 'p26'].reduce((o, k) => (o[k] = sum.reduce((a, f) => a + f[y][k], 0), o), {})]))
+  const s26 = fs.reduce((a, f) => a + (f[2026] ?? NaN), 0)
+  const off = t === 'school' && VAL?.city?.fact  // город, школы: официальный ряд; прогноз и места × F, как в dash
+  if (!off || !off[2026] || !s26) return { fc, F: 1 }
+  const F = off[2026] / s26
+  return { fc: Object.fromEntries(Object.entries(fc).map(([y, r]) => [y, Object.fromEntries(Object.entries(r).map(([k, v]) => [k, v * F]))])), F }
+}
+
+// ---------- шаг ②: пример — дом на FM.flats квартир, сдан в FM.year; множители округлены так же, как на экране
+function house(t, d, y) {
+  const a = Math.min(Math.max(y - FM.year, 0), 14), s = FM.PACE[Math.min(a, 3)]
+  const r2 = v => Math.round(v * 100) / 100, f = t === 'school' ? [r2(FM.level[d]), r2(FM.G7[a] / FM.G7[14])] : [r2(FM.G1[a]), FM.KG_COVER]
+  return { s, f, v: Math.round(FM.flats * s * f[0] * f[1]) }
+}
+
+// ---------- мини-графики шагов
+function kidsLine(K, Y, col) {  // ① дети нужного возраста, живущие в районе
+  const ys = Object.keys(K).map(Number).sort((a, b) => a - b), W = 260, H = 112, L = 18, R = 18, T = 22, B = 22
+  const v = ys.map(y => K[y]), sp = Math.max(...v) - Math.min(...v) || 1, lo = Math.min(...v) - sp * .45, hi = Math.max(...v) + sp * .25  // снизу место под подпись
+  const x = y => L + (y - ys[0]) / (ys.at(-1) - ys[0]) * (W - L - R), yv = k => T + (hi - k) / (hi - lo) * (H - T - B)
+  let g = `<path d="M${ys.map(y => `${x(y)},${yv(K[y])}`).join('L')}" fill="none" stroke="${col}" stroke-width="2.2" opacity=".5"/>`
+  for (const y of ys) {
+    const on = y === 2026 || y === Y, end = y === ys.at(-1)
+    g += `<circle cx="${x(y)}" cy="${yv(K[y])}" r="${on ? 4.6 : 3}" fill="${on ? col : '#fff'}" stroke="${col}" stroke-width="1.8"/>`
+    const dn = K[y - 1] > K[y] && !(K[y + 1] > K[y])  // линия приходит сверху — подпись под точкой
+    if (on) g += `<text x="${x(y) + (end ? 5 : 0)}" y="${yv(K[y]) + (dn ? 18 : -9)}" font-size="12" font-weight="700" fill="${col}" text-anchor="${end ? 'end' : 'middle'}">${n(K[y])}</text>`
+    g += `<text x="${x(y)}" y="${H - 5}" font-size="11" font-weight="${on ? 700 : 400}" fill="${on ? '#1b1740' : '#8a87a8'}" text-anchor="middle">${y}</text>`
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}</svg>`
+}
+function houseBars(t, d, Y) {  // ② учеников из одного дома по годам после сдачи
+  const ys = range(FM.year, FM.year + 14), v = ys.map(y => house(t, d, y).v), mx = Math.max(...v)
+  const W = 340, H = 112, T = 18, B = 20, gw = W / ys.length, bw = gw - 5
+  let g = ''
+  ys.forEach((y, i) => {
+    const h = (H - T - B) * v[i] / mx, x = i * gw + 2.5, on = y === Y, lab = on || i === ys.length - 1 || (i === 0 && Y - FM.year > 1)
+    g += `<rect x="${x}" y="${H - B - h}" width="${bw}" height="${h}" rx="2.5" fill="${on ? GREEN : '#a9dcb9'}"/>`
+    if (lab) g += `<text x="${x + bw / 2}" y="${H - B - h - 5}" font-size="11.5" font-weight="700" fill="${on ? GREEN : '#4b4870'}" text-anchor="middle">${v[i]}</text>`
+      + `<text x="${x + bw / 2}" y="${H - 5}" font-size="11" font-weight="${on ? 700 : 400}" fill="${on ? '#1b1740' : '#8a87a8'}" text-anchor="middle">${y}</text>`
+  })
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}</svg>`
+}
+const hbar = (label, segs, mx, val) => `<div class="hb"><span>${label}</span><div>${segs.map(([v, c]) => `<i style="width:${100 * Math.max(v, 0) / mx}%;background:${c}"></i>`).join('')}</div><b>${val}</b></div>`
+
+// ---------- проверка на истории (как в dash.html; validation.json ← scripts/sync_dash.py)
+const INK = '#1b1740', PRED = COL.kg, LGREY = '#c4c1d8'
+const p0 = v => (Math.round(v * 100) > 0 ? '+' : Math.round(v * 100) < 0 ? '−' : '') + Math.abs(Math.round(v * 100)) + '%'
+const p1 = v => (Math.abs(v) * 100).toFixed(1).replace('.', ',') + '%'
+const nice = span => [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000].find(s => span / s <= 5) || 100000
+const lgl = (c, t, dot) => `<span><i style="background:${c};${dot ? 'border-radius:50%;width:9px;height:9px' : 'height:3px;vertical-align:3px'}"></i>${t}</span>`
+const spread = (ls, gap) => { ls.sort((a, b) => a.y - b.y); ls.forEach((l, i) => { if (i) l.y = Math.max(l.y, ls[i - 1].y + gap) }); return ls }
+function valChart(c, W, H, L, R, T, B, x0, x1, yt, fmt, title) {
+  const vals = c.flatMap(s => s.pts.map(p => p[1])), mn = Math.min(...vals), mx = Math.max(...vals)
+  const st = nice(mx - mn), lo = yt ? Math.floor(mn / st) * st : mn - (mx - mn) * .12, hi = yt ? Math.ceil(mx / st) * st : mx + (mx - mn) * .12
+  const x = y => L + (y - x0) / (x1 - x0) * (W - L - R), yv = v => T + (hi - v) / (hi - lo) * (H - T - B)
+  let g = title ? `<text x="${L}" y="16" font-size="14" font-weight="700" fill="${INK}">${title}</text>` : ''
+  if (c.band) g += `<rect x="${x(c.band)}" y="${T - 20}" width="${x(x1) - x(c.band)}" height="${H - B - T + 20}" fill="#fdf1e6"/><text x="${x(c.band) + 8}" y="${T - 6}" font-size="12.5" font-weight="600" fill="#b8642a">проверка</text>`
+  if (yt) {
+    for (let v = lo; v <= hi; v += st) g += `<line x1="${L}" x2="${W - R}" y1="${yv(v)}" y2="${yv(v)}" stroke="#eeedf6"/><text x="${L - 8}" y="${yv(v) + 4}" font-size="11.5" fill="#8a87a8" text-anchor="end">${yt(v)}</text>`
+  } else g += `<line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="#e3e1f0"/>`
+  const every = x1 - x0 > 10 ? 2 : 1
+  for (let y = x0; y <= x1; y += every) g += `<text x="${x(y)}" y="${H - 9}" font-size="11.5" fill="#6b6890" text-anchor="middle">${y}</text>`
+  for (const s of c) {
+    g += `<path d="M${s.pts.map(([a, b]) => `${x(a).toFixed(1)},${yv(b).toFixed(1)}`).join('L')}" fill="none" stroke="${s.col}" stroke-width="${s.w}" stroke-linejoin="round"/>`
+    if (s.dot) for (const [a, b] of s.pts) g += `<circle cx="${x(a)}" cy="${yv(b)}" r="3.4" fill="${s.col}"/>`
+  }
+  for (const l of spread(c.filter(s => s.end).map(s => ({ y: yv(s.pts.at(-1)[1]) + 4, v: s.pts.at(-1)[1], col: s.col })), 15))
+    g += `<text x="${x(x1) + 8}" y="${l.y}" font-size="13" font-weight="700" fill="${l.col}">${fmt(l.v)}</text>`
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}</svg>`
+}
+function renderVal(V) {
+  const c = V.city, o = c.origin, F = I(c.fact), Pr = I(c.pred), E = I(c.err), N = I(c.naive), CO = I(c.cohort), last = 2026
+  const yrs = m => Object.keys(m).map(Number).sort((a, b) => a - b), K = (c.k.toFixed(2)).replace('.', ',')
+  const late = yrs(E).filter(y => y > c.max_err_to)
+  const s = [
+    { pts: yrs(CO).map(y => [y, CO[y] * c.k]), col: LGREY, w: 2.4 },
+    { pts: [[o, F[o]], [last, F[o]]], col: GREY, w: 2.4, end: 1 },
+    { pts: [[o, F[o]], ...yrs(Pr).map(y => [y, Pr[y]])], col: PRED, w: 2.8, end: 1 },
+    { pts: yrs(F).map(y => [y, F[y]]), col: INK, w: 2.2, dot: 1, end: 1 },
+  ]
+  s.band = o
+  document.getElementById('vCity').innerHTML = `<h2>Казань: прогноз, сделанный в ${o} году, против факта</h2>
+    <div class="vk"><div><b style="color:#5b3cc4">r = ${c.r.toFixed(2).replace('.', ',')}</b><span>ученики и рождённые 7–17 лет назад</span></div>
+      <div><b style="color:#2f9e57">≤ ${p1(c.max_err)}</b><span>ошибка прогноза из ${o} на ${o + 1}–${c.max_err_to}</span></div>
+      <div><b style="color:${RED}">${p0(N[last])}</b><span>ошибка «всё как в ${o}» к ${last}</span></div></div>
+    <div class="legend">${lgl(INK, 'ученики, факт', 1)}${lgl(PRED, `прогноз из ${o}`)}${lgl(GREY, `«всё как в ${o}»`)}${lgl(LGREY, `родились 7–17 лет назад × ${K}`)}</div>
+    ${valChart(s, 820, 330, 44, 72, 34, 30, 2002, last, v => Math.round(v / 1000), v => Math.round(v / 1000) + ' тыс.')}
+    <div class="vn">Модель знала рождения и учеников только до ${o} г.; ${late.join('–')}: ${late.map(y => pc(E[y])).join(' и ')}</div>`
+  const d = V.district, b = d.base, fy = d.factYear
+  const mini = (r, t) => { const ys = yrs(I(r.back)).filter(y => y >= b), Fd = I(r.fact), Bk = I(r.back)
+    return valChart([{ pts: [[b, Fd[b]], [fy, Fd[b]]], col: GREY, w: 2.2, end: 1 }, { pts: ys.map(y => [y, Bk[y]]), col: PRED, w: 2.6, end: 1 },
+      { pts: ys.filter(y => Fd[y] != null).map(y => [y, Fd[y]]), col: INK, w: 2.2, dot: 1, end: 1 }], 470, 172, 14, 70, 32, 26, b, fy, null, n, t) }
+  document.getElementById('vDist').innerHTML = `<h2>${d.name.replace(/ район$/, '')}: прогноз из ${b} года против факта ${fy}</h2>
+    <div class="vk"><div><b>школы ${p1(d.school.err)} · сады ${p1(d.kg.err)}</b><span>«всё как в ${b}»: ${p0(d.school.naive)} и ${p0(d.kg.naive)}</span></div></div>
+    <div class="legend">${lgl(INK, 'факт', 1)}${lgl(PRED, 'модель')}${lgl(GREY, `«всё как в ${b}»`)}</div>
+    ${mini(d.school, 'Школы')}${mini(d.kg, 'Сады')}
+    <div class="vn">${d.school.n} школ и ${d.kg.n} садов с историей госзаданий; рождения после ${b} — фактические</div>`
+  document.getElementById('val').hidden = false
+}
+if (VAL) renderVal(VAL)
+
+// ---------- экран: четыре шага
+const WD = {
+  school: { age: '7–17 лет', rule: 'школа = 7–17 лет', key: 'kids_7_17', one: 'Сколько учеников даёт один дом', unit: ['ученик', 'ученика', 'учеников'], who: 'ученики', sh: 'ученики', bars: 'Учеников из одного дома по годам' },
+  kg: { age: '1–6 лет', rule: 'сад = 1–6 лет', key: 'kids_1_6', one: 'Сколько детей в саду даёт один дом', unit: ['ребёнок', 'ребёнка', 'детей'], who: 'дети в садах', sh: 'дети', bars: 'Детей в саду из одного дома по годам' },
+}
+const head = (no, c, h, sub) => `<div class="sh"><span class="no" style="background:${c}">${no}</span><div><h3>${h}</h3><div class="sub">${sub}</div></div></div>`
+function render() {
+  const t = S.t, Y = S.y, d = S.d, city = d === 'Казань', sc = scope(), r = sc.fc[Y], col = COL[t], w = WD[t]
+  const base = r.p26 + r.dm, where = city ? 'в городе' : 'в районе', name = city ? 'Казань' : d
+  const K = Object.fromEntries(range(2024, 2030).map(y => [y, (city ? DN : [d]).reduce((a, x) => a + I(DIST[x][w.key])[y], 0)]))
+
+  document.getElementById('s1').innerHTML = head(1, col, city ? 'Дети города' : 'Дети района', 'Сдвиг возраста')
+    + `<div class="yy"><div><span>2026 · факт</span><b>${n(r.p26)}</b></div><i>→</i><div><span>${Y} · прогноз</span><b style="color:${col}">${n(base)}</b></div></div>
+    <div class="pr"><span class="pill" style="background:${r.dm < 0 ? '#fbeaea' : '#efeafd'};color:${r.dm < 0 ? RED : col}">${pc(r.dm / r.p26)} · ${sg(r.dm)}</span>${w.rule}</div>
+    <div class="viz"><div class="vc">Дети ${w.age}, живут ${where}</div>${kidsLine(K, Y, col)}</div>`
+
+  const h = house(t, d, Y), cnt = NEW[city ? 'Казань' : d]?.count || 0
+  const f2 = t === 'school' ? [[dec(h.f[0]), 'в обжитой квартире'], [dec(h.f[1]), 'волна']] : [[dec(h.f[0]), 'малышей в квартире'], [dec(h.f[1]), 'ходят в сад']]
+  document.getElementById('s2').innerHTML = head(2, GREEN, 'Из новых домов', w.one)
+    + `<div class="chain"><div class="pq"><b>${FM.flats}</b><span>квартир</span></div><i>×</i><div class="pq"><b>${Math.round(h.s * 100)}%</b><span>заселено</span></div>`
+    + f2.map(([v, l]) => `<i>×</i><div class="pq"><b>${v}</b><span>${l}</span></div>`).join('')
+    + `</div><div class="hr"><i>=</i><b>${h.v}</b><span>${plural(h.v, w.unit)} из одного дома в ${Y}</span></div>
+    <div class="tot">${n(cnt)} ${plural(cnt, ['стройка', 'стройки', 'строек'])} → <b>${sg(r.nw)}</b> к ${Y}</div>
+    <div class="viz"><div class="vc">${w.bars} · дом сдан в ${FM.year}</div>${houseBars(t, d, Y)}</div>`
+
+  const mx3 = Math.max(r.p26, r.mid)
+  document.getElementById('s3').innerHTML = head(3, col, `Итого ${name}, ${Y}`, 'шаг 1 + шаг 2')
+    + `<div class="rc"><div><i></i><span><em style="background:${LIGHT[t]}"></em>${w.sh} ${city ? 'из города' : 'из района'}</span><b>${n(base)}</b></div>
+      <div><i>+</i><span><em style="background:${GREEN}"></em>из новых домов</span><b style="color:${GREEN}">${n(r.nw)}</b></div>
+      <div class="eq"><i>=</i><span>всего</span><b style="color:${col}">${n(r.mid)}</b></div></div>
+    <div class="viz">${hbar('2026', [[r.p26, '#d9d5ea']], mx3, n(r.p26))}${hbar(Y, [[base, LIGHT[t]], [r.nw, GREEN]], mx3, n(r.mid))}</div>`
+
+  const pl0 = places(t, d), seats = pl0 && pl0[Y] * (sc.F || 1) + (planned(t, d)[Y] || 0), gap = seats == null ? null : r.mid - seats
+  document.getElementById('s4').innerHTML = gap == null ? head(4, col, 'Места', `${name}, ${Y}`) + '<div class="note">Нет данных о местах</div>'
+    : head(4, gap > 0 ? RED : GREEN, gap > 0 ? 'Не хватает мест' : 'Мест хватает', 'шаг 3 − места')
+    + `<div class="rc"><div><i></i><span>${w.who}</span><b>${n(r.mid)}</b></div>
+      <div><i>−</i><span>места</span><b style="color:${GREY}">${n(seats)}</b></div>
+      <div class="eq"><i>=</i><span>${gap > 0 ? 'дефицит мест' : 'свободных мест'}</span><b style="color:${gap > 0 ? RED : GREEN}">${n(Math.abs(gap))}</b></div></div>
+    <div class="viz">${hbar(w.sh, [[Math.min(r.mid, seats), col], [gap, RED]], Math.max(r.mid, seats), n(r.mid))}${hbar('места', [[seats, GREY]], Math.max(r.mid, seats), n(seats))}
+      <div class="note">места — оценка; строящиеся учтены с года открытия</div></div>`
+
+  document.getElementById('yv').textContent = Y
+  history.replaceState(null, '', `?d=${encodeURIComponent(S.d)}&t=${S.t}&y=${S.y}`)
+}
+
+function chips(id, items, cur, set) {
+  const el = document.getElementById(id)
+  el.innerHTML = items.map(([k, label]) => `<a data-k="${k}" class="${String(k) === String(cur) ? 'on' : ''}">${label}</a>`).join('')
+  el.querySelectorAll('a').forEach(a => a.onclick = () => { set(a.dataset.k); sync() })
+}
+const yEl = document.getElementById('fy')
+yEl.oninput = () => { S.y = +yEl.value; render() }
+function sync() {
+  chips('fd', [['Казань', 'Вся Казань'], ...DN.map(d => [d, d])], S.d, k => S.d = k)
+  chips('ft', [['school', 'Школы'], ['kg', 'Сады']], S.t, k => S.t = k)
+  yEl.value = S.y
+  render()
+}
+sync()
+</script>
+</html>

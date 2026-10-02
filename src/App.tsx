@@ -301,6 +301,7 @@ export default function App() {
           ) : (
             <nav className="seg" aria-label="Продукты">
               <a href={DASH_URL}>Графики</a>
+              <a href="/dash/formula.html">Как считаем</a>
               <a href="?view=107" className={product === '107' ? 'on' : ''} aria-current={product === '107' ? 'page' : undefined} onClick={e => openProduct(e, '107')}>3D: гимназия № 107</a>
               <a href="?view=empty" className={product === 'empty' ? 'on' : ''} aria-current={product === 'empty' ? 'page' : undefined} onClick={e => openProduct(e, 'empty')}>Новый ЖК</a>
             </nav>

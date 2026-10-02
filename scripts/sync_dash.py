@@ -2,7 +2,7 @@
 # чтобы все три продукта открывались с одного адреса (http://localhost:5180/dash/dash.html).
 # ИП (частные сады) обезличиваются: в названии ИП — ФИО, ИНН ИП — личный. Сам dash.html живёт в public/dash.
 # Запуск после пересборки данных:  python scripts/sync_dash.py
-import json, pathlib, re
+import json, pathlib, re, sys
 
 SRC = pathlib.Path('C:/tmp/demo/kzn/goroda/map')
 DST = pathlib.Path(__file__).resolve().parent.parent / 'public' / 'dash'
@@ -45,11 +45,31 @@ plan = [{'name': 'Детский сад в к. п. «Волжская Гаван
         {'name': 'Детский сад, ул. Гаврилова', 'kind': 'kg', 'capacity': None, 'district': None, 'year': 2031,
          'status': 'строится · реестр Госстройнадзора РТ', 'url': GSN_URL}]
 PF = pathlib.Path('C:/tmp/kzn/planned_edu.json')
+def keep(r):  # в список: подтверждённая цитата, конкретный объект (не «[…] N школ по генплану»), горизонт 2026–2031, не ремонт
+    y = r.get('year')
+    return (r.get('quote_verified') and r.get('kind') in ('school', 'kg') and not r['name'].startswith('[')
+            and (y is None or 2026 <= y <= 2031) and 'ремонт' not in (r.get('status') or ''))
+# В линию мест (год ≠ None) — только то, что строится и откроется к сроку; спорное — в список без года:
+FIX = {'Станция Юбилейная': {'year': 2027, 'status': 'строится · 1-й этап — до 01.12.2026, приём учеников — с 2027'},
+       'ул. Родины': {'year': None, 'status': 'контракт 10.2025, срок 31.05.2026 · статус не подтверждён, возможен дубль лицея № 79 (2024)'}}
 if PF.exists():
-    plan += [{k: r.get(k) for k in ('name', 'kind', 'capacity', 'approx', 'district', 'year', 'status', 'url')}
-             for r in json.load(open(PF, encoding='utf-8')) if r.get('quote_verified') and r.get('kind') in ('school', 'kg')]
+    for r in filter(keep, json.load(open(PF, encoding='utf-8'))):
+        rec = {k: r.get(k) for k in ('name', 'kind', 'capacity', 'approx', 'district', 'year', 'status', 'url')}
+        for key, upd in FIX.items():
+            if key in rec['name']: rec.update(upd)
+        plan.append(rec)
+
+# Страница «Как считаем» (formula.html), шаг ②: коэффициенты формулы «новый дом → дети» — из самого gsn_forecast.py
+sys.path.insert(0, str(SRC.parent))
+from gsn_forecast import G7, G1, PACE, PUPILS_PER_KID, KG_COVER, VARIANTS, levels_from
+coef = json.load(open(SRC.parent / 'coef_districts.json', encoding='utf-8'))
+cc = coef['city']
+formula = {'G7': G7, 'G1': G1, 'PACE': PACE, 'KG_COVER': KG_COVER, 'PUPILS_PER_KID': PUPILS_PER_KID,
+           'level': {**levels_from(coef['districts']), 'Казань': min(cc['kids_7_17'] / (cc['flats'] + cc['izhs']), 0.36) * PUPILS_PER_KID},
+           'flats': VARIANTS['mid'][0], 'year': 2026}
 
 DST.mkdir(parents=True, exist_ok=True)
+json.dump(formula, open(DST / 'formula.json', 'w', encoding='utf-8'), ensure_ascii=False)
 json.dump(plan, open(DST / 'planned.json', 'w', encoding='utf-8'), ensure_ascii=False)
 json.dump(charts, open(DST / 'charts.json', 'w', encoding='utf-8'), ensure_ascii=False)
 json.dump(dash, open(DST / 'dash_data.json', 'w', encoding='utf-8'), ensure_ascii=False)

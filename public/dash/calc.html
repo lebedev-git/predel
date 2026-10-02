@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<title>ПРЕДЕЛ · Калькулятор нового дома</title>
+<style>
+  :root { --base: #eef1f5; --paper: #fff; --ink: #202733; --muted: #596575; --line: #dce2e9; --cobalt: #1f4fd8; --new: #2f9e57; --kg: #e07a2e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--base); font: 15px/1.45 'Segoe UI', Arial, sans-serif; color: var(--ink); }
+  input, select, button { font: inherit; color: inherit; }
+  b, td, .v { font-variant-numeric: tabular-nums; }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 32px 32px; }
+  header { min-height: 76px; display: flex; align-items: center; gap: 20px; margin: 0 -32px 24px; padding: 0 32px; background: var(--paper); border-bottom: 1px solid var(--line); }
+  header h1 { font: 800 28px/1 'Segoe UI', Arial, sans-serif; letter-spacing: .04em; margin: 0; }
+  header span { color: var(--muted); }
+  header nav { margin-left: auto; display: flex; gap: 3px; padding: 4px; background: #f0f3f8; border-radius: 10px; }
+  header nav a, header nav b { font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 7px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  header nav a:hover { background: #e5ebf5; color: var(--ink); }
+  header nav b { background: var(--cobalt); color: #fff; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; }
+  .top { display: grid; grid-template-columns: 420px 1fr; gap: 22px; margin-bottom: 22px; }
+  h2 { font-size: 19px; font-weight: 650; margin: 0 0 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 6px; }
+  select, input[type=number] { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .row { display: grid; grid-template-columns: 1fr 1fr 34px; gap: 8px; align-items: end; margin-bottom: 8px; }
+  .row button, .add { border: 1px solid var(--line); background: #fff; border-radius: 8px; cursor: pointer; height: 40px; }
+  .add { width: 100%; margin: 4px 0 18px; color: var(--cobalt); font-weight: 600; }
+  .lvl small { display: block; color: var(--muted); font-size: 12.5px; margin-top: 6px; }
+  .yr { margin-top: 18px; }
+  .yr input { width: 100%; accent-color: var(--cobalt); }
+  .yr b { color: var(--cobalt); font-size: 17px; }
+  .fx { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; margin-bottom: 16px; }
+  .fx .t { flex: 1 1 130px; background: #f5f7fa; border-radius: 12px; padding: 12px 14px; }
+  .fx .t span { display: block; font-size: 12.5px; color: var(--muted); }
+  .fx .t b { font-size: 26px; font-weight: 700; }
+  .fx .op { align-self: center; font-size: 26px; font-weight: 700; color: var(--muted); }
+  .fx .res { background: var(--cobalt); color: #fff; } .fx .res span { color: #dbe5ff; }
+  .q { font-size: 14px; color: var(--muted); margin: 2px 0; }
+  .legend { font-size: 13px; color: var(--muted); display: flex; gap: 18px; margin: 12px 0 8px; }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  svg { display: block; width: 100%; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  td, th { padding: 7px 8px; text-align: center; border-bottom: 1px solid var(--line); }
+  th { font-weight: 600; color: var(--muted); font-size: 12.5px; }
+  td:first-child, th:first-child { text-align: left; color: var(--muted); }
+  .note { font-size: 13px; color: var(--muted); margin-top: 12px; }
+</style>
+<div class="wrap">
+  <header><h1>ПРЕДЕЛ</h1><span>Калькулятор нового дома</span>
+    <nav><a href="/dash/dash.html">Графики</a><a href="/dash/formula.html">Как считаем</a><b>Калькулятор дома</b><a href="/?view=107">3D: гимназия № 107</a><a href="/?view=empty">Новый ЖК</a></nav></header>
+
+  <div class="top">
+    <div class="card">
+      <h2>Дом или ЖК</h2>
+      <label>Район</label>
+      <select id="d"></select>
+      <div class="lvl" style="margin-top:14px"><label>Школьников на обжитую квартиру</label>
+        <input id="lv" type="number" step="0.01" min="0" max="1">
+        <small>среднее по району: дети 7–17 лет (Татарстанстат, 01.01.2024) ÷ квартиры (OpenStreetMap) × 0,96 — столько из них учится в школе</small></div>
+      <div style="margin-top:18px"><label>Очереди: квартир · год заселения</label><div id="qs"></div>
+        <button class="add" id="add">+ очередь</button></div>
+      <div class="yr"><label>Год расчёта: <b id="yv"></b></label><input id="y" type="range"></div>
+    </div>
+    <div class="card">
+      <h2 id="fxT"></h2>
+      <div id="fx"></div>
+      <div class="legend"><span><i style="background:var(--new)"></i>школьники из дома</span><span><i style="background:var(--kg)"></i>дети в детском саду</span></div>
+      <svg id="ch" viewBox="0 0 900 300"></svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Волна: как растёт число школьников в доме</h2>
+    <table id="wv"></table>
+    <div class="note">Форма волны — калькулятор FolgekostenSchätzer министерства Бранденбурга (многоквартирные дома, дети 7–17 лет по году жизни дома, нормировано на 15-й год). Уровень — казанский, по району. Заселение 50% → 80% → 95% → 100% — допущение, проверяем в пилоте. Сад: немецкая кривая детей 1–6 лет × 0,70 (столько детей ходит в сад в Казани).</div>
+  </div>
+</div>
+
+<script type="module">
+// Та же формула, что в дашборде (gsn_forecast.py): ученики = квартиры × заселение × уровень района × волна; коэффициенты — formula.json
+const F = await fetch('formula.json', { cache: 'no-store' }).then(r => r.json())
+const G7 = F.G7, G1 = F.G1, PACE = F.PACE, W = G7.map(v => v / G7[G7.length - 1])
+const n = v => Math.round(v).toLocaleString('ru-RU'), d2 = v => v.toFixed(2).replace('.', ','), pc = v => Math.round(v * 100) + '%'
+const settle = (y, t) => y < t ? 0 : PACE[Math.min(y - t, 3)]
+const age = (y, t) => Math.min(Math.max(y - t + 1, 1), 15)
+const school = (q, y, lv) => q.f * settle(y, q.t) * lv * W[age(y, q.t) - 1]
+const kg = (q, y) => q.f * settle(y, q.t) * G1[age(y, q.t) - 1] * F.KG_COVER
+
+const P = new URLSearchParams(location.search)
+const S = { d: P.get('d') || 'Кировский', qs: [{ f: 728, t: 2027 }, { f: 752, t: 2028 }], y: 2030 }  // по умолчанию — ЖК «Салават Купере» (реестр ГСН)
+const D = Object.keys(F.level).filter(k => k !== 'Казань').concat('Казань')
+const dEl = document.getElementById('d'), lvEl = document.getElementById('lv')
+dEl.innerHTML = D.map(k => `<option${k === S.d ? ' selected' : ''}>${k}</option>`).join('')
+S.lv = F.level[S.d]; lvEl.value = S.lv.toFixed(2)  // в расчёте — точный уровень района, в поле — округлённый; правка поля заменяет уровень
+dEl.onchange = () => { S.d = dEl.value; S.lv = F.level[S.d]; lvEl.value = S.lv.toFixed(2); draw() }
+lvEl.oninput = () => { S.lv = +lvEl.value || 0; draw() }
+document.getElementById('add').onclick = () => { const l = S.qs.at(-1); S.qs.push({ f: 320, t: (l?.t ?? 2027) + 1 }); queues(); draw() }
+
+function queues() {
+  const el = document.getElementById('qs')
+  el.innerHTML = S.qs.map((q, i) => `<div class="row"><input type="number" min="0" step="10" value="${q.f}" data-i="${i}" data-k="f"><input type="number" min="2020" max="2040" value="${q.t}" data-i="${i}" data-k="t"><button data-x="${i}" title="Убрать очередь"${S.qs.length < 2 ? ' disabled' : ''}>×</button></div>`).join('')
+  el.querySelectorAll('input').forEach(inp => inp.oninput = () => { S.qs[+inp.dataset.i][inp.dataset.k] = +inp.value || 0; draw() })
+  el.querySelectorAll('button').forEach(b => b.onclick = () => { S.qs.splice(+b.dataset.x, 1); queues(); draw() })
+}
+
+function draw() {
+  const lv = S.lv, qs = S.qs.filter(q => q.f > 0)
+  const y0 = Math.min(...qs.map(q => q.t)), y1 = Math.max(...qs.map(q => q.t)) + 14
+  const yEl = document.getElementById('y'); yEl.min = y0; yEl.max = y1; S.y = Math.min(Math.max(S.y, y0), y1); yEl.value = S.y
+  yEl.oninput = () => { S.y = +yEl.value; draw() }
+  document.getElementById('yv').textContent = S.y
+  const Y = S.y, tot = qs.reduce((a, q) => a + school(q, Y, lv), 0), totK = qs.reduce((a, q) => a + kg(q, Y), 0)
+  const fl = qs.reduce((a, q) => a + q.f, 0)
+  document.getElementById('fxT').textContent = `${Y}: ${n(tot)} школьников и ${n(totK)} детей в саду из ${n(fl)} квартир`
+  const one = qs.length === 1 ? qs[0] : null
+  document.getElementById('fx').innerHTML = (one
+    ? `<div class="fx"><div class="t"><span>квартиры</span><b>${n(one.f)}</b></div><div class="op">×</div>
+       <div class="t"><span>заселено</span><b>${pc(settle(Y, one.t))}</b></div><div class="op">×</div>
+       <div class="t"><span>школьников на квартиру</span><b>${d2(lv)}</b></div><div class="op">×</div>
+       <div class="t"><span>волна, ${age(Y, one.t)}-й год дома</span><b>${d2(W[age(Y, one.t) - 1])}</b></div><div class="op">=</div>
+       <div class="t res"><span>учеников</span><b>${n(tot)}</b></div></div>`
+    : `<div class="fx"><div class="t"><span>квартиры</span><b>${n(fl)}</b></div><div class="op">×</div><div class="t"><span>заселено · волна — по очередям</span><b>↓</b></div><div class="op">×</div>
+       <div class="t"><span>школьников на квартиру</span><b>${d2(lv)}</b></div><div class="op">=</div><div class="t res"><span>учеников</span><b>${n(tot)}</b></div></div>`
+      + qs.map((q, i) => `<div class="q">очередь ${i + 1}: ${n(q.f)} кв. × ${pc(settle(Y, q.t))} × ${d2(lv)} × волна ${d2(Y >= q.t ? W[age(Y, q.t) - 1] : 0)} (${Y >= q.t ? age(Y, q.t) + '-й год' : 'ещё не заселена'}) = <b>${n(school(q, Y, lv))}</b></div>`).join(''))
+  chart(qs, lv, y0, y1)
+}
+
+function chart(qs, lv, y0, y1) {
+  const ys = []; for (let y = y0; y <= y1; y++) ys.push(y)
+  const s = ys.map(y => qs.reduce((a, q) => a + school(q, y, lv), 0)), k = ys.map(y => qs.reduce((a, q) => a + kg(q, y), 0))
+  const L = 40, R = 16, T = 26, B = 30, Wd = 900 - L - R, H = 300 - T - B, mx = Math.max(1, ...s, ...k) * 1.12, step = Wd / ys.length, bw = Math.min(34, step * .62)
+  const yv = v => T + H - H * v / mx
+  let g = `<line x1="${L}" x2="${900 - R}" y1="${T + H}" y2="${T + H}" stroke="#c9d1db"/>`
+  ys.forEach((y, i) => {
+    const x = L + i * step + (step - bw) / 2, on = y === S.y
+    g += `<rect x="${x}" y="${yv(s[i])}" width="${bw}" height="${T + H - yv(s[i])}" rx="4" fill="${on ? '#1f7a41' : '#8fd0a6'}"/>`
+    if (on || i === 0 || i === ys.length - 1) g += `<text x="${x + bw / 2}" y="${yv(s[i]) - 7}" font-size="14" font-weight="700" text-anchor="middle" fill="#202733">${n(s[i])}</text>`
+    g += `<text x="${x + bw / 2}" y="${300 - 10}" font-size="12" text-anchor="middle" fill="${on ? '#1f4fd8' : '#596575'}" font-weight="${on ? 700 : 400}">${y}</text>`
+  })
+  const pts = ys.map((y, i) => `${L + i * step + step / 2},${yv(k[i])}`).join(' ')
+  g += `<polyline points="${pts}" fill="none" stroke="#e07a2e" stroke-width="3" stroke-linejoin="round"/>`
+  ys.forEach((y, i) => { g += `<circle cx="${L + i * step + step / 2}" cy="${yv(k[i])}" r="3.5" fill="#e07a2e"/>` })
+  document.getElementById('ch').innerHTML = g
+}
+
+document.getElementById('wv').innerHTML = `<tr><th>Год жизни дома</th>${W.map((_, i) => `<th>${i + 1}</th>`).join('')}</tr>`
+  + `<tr><td>Германия, школьников на квартиру</td>${G7.map(v => `<td>${v.toFixed(3).replace('.', ',')}</td>`).join('')}</tr>`
+  + `<tr><td><b>Волна</b> (доля от 15-го года)</td>${W.map(v => `<td><b>${d2(v)}</b></td>`).join('')}</tr>`
+queues(); draw()
+</script>

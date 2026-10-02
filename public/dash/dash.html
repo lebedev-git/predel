@@ -344,7 +344,8 @@ function render() {
     <div><div class="cap">${KID[0].toUpperCase() + KID.slice(1)}, ${Y} — прогноз</div><div class="val" style="color:${col}">${n(vY)}</div></div>
     <div><div class="cap">${KID[0].toUpperCase() + KID.slice(1)}, 2026 — факт</div><div class="val">${n(v26)}</div></div>
     <div><div class="cap">Изменение к 2026</div><div class="val" style="color:${vY >= v26 ? col : '#c0504d'}">${pc(vY / v26 - 1)}</div></div>
-    <div><div class="cap">${t === 'school' ? 'Школ' : 'Садов'} ${city ? 'в городе' : 'в районе'}</div><div class="val">${city ? DN.reduce((a, d) => a + DIST[d][t + '_count'], 0) : DIST[S.d][t + '_count']}</div></div>`
+    <div><div class="cap">${t === 'school' ? 'Школ' : 'Садов'} ${city ? 'в городе' : 'в районе'}</div><div class="val">${city ? DN.reduce((a, d) => a + DIST[d][t + '_count'], 0) : DIST[S.d][t + '_count']}</div></div>
+    <div><div class="cap">Строек сдадут к ${Y} (реестр ГСН)</div><div class="val" style="color:${COL.new}">${Object.entries(NEW[city ? 'Казань' : S.d]?.by_T || {}).reduce((a, [k, v]) => a + (+k <= Y ? v : 0), 0)}</div></div>`
     + (pl ? `<div><div class="cap">Загрузка ${Y} (места — оценка)</div><div class="val" style="color:${vY > pl[Y] ? RED : '#1b1740'}">${Math.round(100 * vY / pl[Y])}%</div></div>` : '')
   document.getElementById('yv').textContent = Y
 

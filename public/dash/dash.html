@@ -99,6 +99,7 @@
     <div class="card" id="byCard"><h2>Прирост к 2026 году</h2><div class="legend" id="lg3"></div><div id="by"></div></div>
     <div class="card"><h2>Стройки по году сдачи</h2><div id="gsn"></div></div>
   </div>
+  <div class="card" id="planCard" style="margin-bottom:16px"><h2 id="planT"></h2><div id="plan"></div></div>
   <div class="card" id="dcCard" style="margin-bottom:16px"><h2 id="dcT"></h2><div class="legend" id="lg4"></div><div class="cards" id="dc"></div></div>
   <div class="card" style="margin-bottom:16px"><div class="hd"><h2 id="orgT"></h2><div class="legend" id="lg5"></div><input id="q" type="search" placeholder="Поиск по названию или номеру"></div><div class="tbl click" id="orgs"></div></div>
   <div class="card" style="margin-bottom:16px"><div class="hd"><h2 id="devT"></h2></div><div id="devBars"></div><div class="tbl" id="devs" style="max-height:420px;margin-top:8px"></div></div>
@@ -127,6 +128,9 @@ const GREY = '#8f8ca8', RED = '#c0504d'
 // ---------- организации: реестр и места (dash_data.py → dash_data.json; нет файла или мест — «—» и без линии мест)
 const DD = await fetch('dash_data.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : {}).catch(() => ({}))
 const REG = DD.orgs || {}, CAP = DD.cap || {}, HASCAP = Object.keys(CAP).length > 0
+const PLAN = await fetch('planned.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(() => [])  // строятся/объявлены: {name, kind, capacity, district, year, status, url}
+const planOf = (t, d) => PLAN.filter(p => p.kind === t && (d === 'Казань' || p.district === d))
+const planned = (t, d) => Object.fromEntries(range(2020, 2030).map(y => [y, planOf(t, d).filter(p => p.capacity && p.year && p.year <= y).reduce((a, p) => a + p.capacity, 0)]))
 const ORGS = DATA.orgs.map(o => ({ ...o, key: o.inn + ':' + o.type, y: I(o.years) }))  // один ИНН бывает и школой, и садом
 const capY = (o, y) => {  // мест в году y: корпуса, открытые к y (без года — всегда)
   const c = CAP[o.key]; if (!c) return null
@@ -227,6 +231,14 @@ function breakdown(r, t, Y, pl) {  // «чек»: было → дети райо
     <div class="row tot"><span>${Y}, прогноз</span><b style="color:${COL[t]}">${n(r.mid)}</b><span></span></div>`
     + (pl ? gap(r.p26, pl[2026], '2026, факт') + gap(r.mid, pl[Y], `${Y}, прогноз`) : '') + `</div>`
 }
+function planList(po, t) {  // по году открытия: столбик мест + строки объектов со ссылкой на источник
+  const by = {}; for (const p of po) { const y = p.year || 'без года'; by[y] = by[y] || { n: 0, c: 0 }; by[y].n++; by[y].c += p.capacity || 0 }
+  const mx = Math.max(1, ...Object.values(by).map(v => v.c))
+  const bars = Object.entries(by).map(([y, v]) => `<div style="display:flex;align-items:center;gap:10px;margin:4px 0;font-size:13px"><b style="width:70px">${y}</b><span style="height:14px;border-radius:3px;background:${COL[t]};opacity:.75;width:${Math.max(4, 260 * v.c / mx)}px"></span><span>${v.n} ${t === 'school' ? 'шк.' : 'сад.'} · ${v.c ? '+' + n(v.c) + ' мест' : 'мест — н/д'}</span></div>`).join('')
+  const rows = po.map(p => `<tr><td>${p.year ?? '—'}</td><td style="text-align:left">${esc(p.name)}</td><td style="text-align:left">${esc(p.district || '—')}</td><td>${p.capacity ? n(p.capacity) + (p.approx ? ' ≈' : '') : '—'}</td><td style="text-align:left">${esc(p.status || '')}</td><td>${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">источник ↗</a>` : ''}</td></tr>`).join('')
+  return `<div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;align-items:start"><div>${bars}<div style="font-size:11.5px;color:#8a87a8;margin-top:6px">Места входят в линию мест и в разрыв с года открытия</div></div>`
+    + `<div class="tbl" style="max-height:300px"><table><tr><th>Год</th><th style="text-align:left">Объект</th><th style="text-align:left">Район</th><th>Мест</th><th style="text-align:left">Статус</th><th></th></tr>${rows}</table></div></div>`
+}
 function gap(kids, seats, when) {  // разрыв: детей больше, чем мест (места — оценка; новые школы — только уже открытые)
   const d = kids - seats
   return `<div class="row"><span>${d > 0 ? 'Не хватает мест' : 'Свободных мест'} · ${when}<br><small style="color:#8a87a8">мест ${n(seats)}</small></span><b style="color:${d > 0 ? '#c0504d' : '#2f9e57'}">${n(Math.abs(d))}</b><span></span></div>`
@@ -326,7 +338,8 @@ function render() {
   const t = S.t, Y = S.y, city = S.d === 'Казань', sc = scope(), col = COL[t]
   const KID = t === 'school' ? 'учеников' : 'детей в садах'
   const v26 = sc.fact[2026], vY = sc.fc[Y].mid, pl0 = places(t, S.d)
-  const pl = pl0 && sc.F && sc.F !== 1 ? Object.fromEntries(Object.entries(pl0).map(([y, v]) => [y, v * sc.F])) : pl0  // места — в том же масштабе, что ученики
+  const pn = planned(t, S.d)  // строящиеся и объявленные — точные цифры, масштаб F к ним не применяем
+  const pl = pl0 && Object.fromEntries(Object.entries(pl0).map(([y, v]) => [y, v * (sc.F || 1) + (pn[y] || 0)]))  // места — в том же масштабе, что ученики
   document.getElementById('kpi').innerHTML = `
     <div><div class="cap">${KID[0].toUpperCase() + KID.slice(1)}, ${Y} — прогноз</div><div class="val" style="color:${col}">${n(vY)}</div></div>
     <div><div class="cap">${KID[0].toUpperCase() + KID.slice(1)}, 2026 — факт</div><div class="val">${n(v26)}</div></div>
@@ -346,6 +359,9 @@ function render() {
   document.getElementById('lg3').innerHTML = parts
   document.getElementById('by').innerHTML = byYear(D, t, Y)
   document.getElementById('gsn').innerHTML = gsnBars(NEW[city ? 'Казань' : S.d]?.by_T || {})
+  const po = planOf(t, S.d).sort((a, b) => (a.year || 9999) - (b.year || 9999))
+  document.getElementById('planT').textContent = `Строятся и объявлены: ${t === 'school' ? 'школы' : 'сады'}${city ? '' : ' района'}`
+  document.getElementById('plan').innerHTML = po.length ? planList(po, t) : '<div class="muted" style="font-size:13px;color:#8a87a8">Строящихся и объявленных объектов в открытых источниках не нашли</div>'
 
   const dc = document.getElementById('dcCard'); dc.style.display = city ? '' : 'none'
   if (city) {

@@ -37,7 +37,20 @@ val = {
                  **{t: {k: nh[t][k] for k in ('n', 'fact', 'back', 'err', 'naive')} for t in ('school', 'kg')}},
 }
 
+# Строящиеся и объявленные школы/сады: реестр Госстройнадзора РТ (жилья там много, образования — два сада)
+# + новости/программы (C:/tmp/kzn/planned_edu.json, только цитаты, подтверждённые повторной загрузкой страницы)
+GSN_URL = 'https://gsn.tatarstan.ru/reestr-obektov-kapitalnogo-stroitelstva-i.htm'
+plan = [{'name': 'Детский сад в к. п. «Волжская Гавань»', 'kind': 'kg', 'capacity': 78, 'district': None, 'year': 2026,
+         'status': 'строится · реестр Госстройнадзора РТ', 'url': GSN_URL},
+        {'name': 'Детский сад, ул. Гаврилова', 'kind': 'kg', 'capacity': None, 'district': None, 'year': 2031,
+         'status': 'строится · реестр Госстройнадзора РТ', 'url': GSN_URL}]
+PF = pathlib.Path('C:/tmp/kzn/planned_edu.json')
+if PF.exists():
+    plan += [{k: r.get(k) for k in ('name', 'kind', 'capacity', 'approx', 'district', 'year', 'status', 'url')}
+             for r in json.load(open(PF, encoding='utf-8')) if r.get('quote_verified') and r.get('kind') in ('school', 'kg')]
+
 DST.mkdir(parents=True, exist_ok=True)
+json.dump(plan, open(DST / 'planned.json', 'w', encoding='utf-8'), ensure_ascii=False)
 json.dump(charts, open(DST / 'charts.json', 'w', encoding='utf-8'), ensure_ascii=False)
 json.dump(dash, open(DST / 'dash_data.json', 'w', encoding='utf-8'), ensure_ascii=False)
 json.dump(val, open(DST / 'validation.json', 'w', encoding='utf-8'), ensure_ascii=False)

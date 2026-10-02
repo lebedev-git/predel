@@ -24,7 +24,7 @@ function cards(h: YearResult, res: Result, placed: Placed[], view: View): Card[]
     const pl = placed.filter(p => p.kind === kind)
     const word = kind === 'kindergarten' ? plural(pl.length, 'сад', 'сада', 'садов') : plural(pl.length, 'школа', 'школы', 'школ')
     const action = pl.length ? `${pl.length} ${word} по ${n(pl[0].amount)} ${plural(Math.round(pl[0].amount), 'место', 'места', 'мест')} к ${pl[0].year}` : rec(title) ? 'места в ЖК или пристрой' : 'строить не нужно'
-    const first = scen.value >= norm.value ? [{ label: 'по прогнозу', m: scen }, { label: 'по нормативу', m: norm }] : [{ label: 'по нормативу', m: norm }, { label: 'по прогнозу', m: scen }]
+    const first = scen.value >= norm.value ? [{ label: 'по сценарию', m: scen }, { label: 'по нормативу', m: norm }] : [{ label: 'по нормативу', m: norm }, { label: 'по сценарию', m: scen }]
     return { key, title, tone: need > 0 ? 'crit' : 'ok', badge: need > 0 ? 'не хватает' : 'хватает', value: need > 0 ? `−${n(need)}` : '0', unit: 'мест',
       action: view === 'mitigated' && need === 0 && pl.length ? 'закрыто новыми объектами' : action, chains: first, place: pl, rec: rec(title) }
   }

@@ -217,14 +217,19 @@ function line(sc, color, cursor, cap) {  // cap — {год: мест} или nu
   return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}</svg>`
 }
 
-function breakdown(r, t, Y) {  // «чек»: было → дети района → новые дома → стало; полоски от нуля
+function breakdown(r, t, Y, pl) {  // «чек»: было → дети района → новые дома → стало; ниже — разрыв «дети − места»; полоски от нуля
   const mx = Math.max(Math.abs(r.dm), Math.abs(r.nw), 1)
   const bar = (v, col) => `<span class="bar"><i style="background:${col};${v < 0 ? `right:50%` : `left:50%`};width:${50 * Math.abs(v) / mx}%"></i></span>`
   return `<div class="bd">
     <div class="row tot"><span>2026, факт</span><b>${n(r.p26)}</b><span></span></div>
     <div class="row"><span>Дети, уже живущие ${S.d === 'Казань' ? 'в городе' : 'в районе'}</span><b style="color:${r.dm < 0 ? '#c0504d' : COL[t]}">${sg(r.dm)}</b>${bar(r.dm, LIGHT[t])}</div>
     <div class="row"><span>Дети из новых домов</span><b style="color:${COL.new}">${sg(r.nw)}</b>${bar(r.nw, COL.new)}</div>
-    <div class="row tot"><span>${Y}, прогноз</span><b style="color:${COL[t]}">${n(r.mid)}</b><span></span></div></div>`
+    <div class="row tot"><span>${Y}, прогноз</span><b style="color:${COL[t]}">${n(r.mid)}</b><span></span></div>`
+    + (pl ? gap(r.p26, pl[2026], '2026, факт') + gap(r.mid, pl[Y], `${Y}, прогноз`) : '') + `</div>`
+}
+function gap(kids, seats, when) {  // разрыв: детей больше, чем мест (места — оценка; новые школы — только уже открытые)
+  const d = kids - seats
+  return `<div class="row"><span>${d > 0 ? 'Не хватает мест' : 'Свободных мест'} · ${when}<br><small style="color:#8a87a8">мест ${n(seats)}</small></span><b style="color:${d > 0 ? '#c0504d' : '#2f9e57'}">${n(Math.abs(d))}</b><span></span></div>`
 }
 
 function byYear(fc, t, cursor) {  // столбики прироста к 2026: бледный — дети района, зелёный — новые дома
@@ -337,7 +342,7 @@ function render() {
   const D = sc.fc
   const parts = `<span><i style="background:${LIGHT[t]}"></i>дети района</span><span><i style="background:${COL.new}"></i>новые дома</span>`
   document.getElementById('wfT').textContent = `Как меняется число ${KID} к ${Y}`
-  document.getElementById('wf').innerHTML = breakdown(D[Y], t, Y)
+  document.getElementById('wf').innerHTML = breakdown(D[Y], t, Y, pl)
   document.getElementById('lg3').innerHTML = parts
   document.getElementById('by').innerHTML = byYear(D, t, Y)
   document.getElementById('gsn').innerHTML = gsnBars(NEW[city ? 'Казань' : S.d]?.by_T || {})

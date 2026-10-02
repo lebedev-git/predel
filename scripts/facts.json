@@ -1,0 +1,5 @@
+[
+  {"id": "sc186", "capacity": 2725, "capacityText": "проектная мощность 2 725 мест (два здания: 1 224 и 1 501) — источник «Реального времени», 03.04.2026", "load": 2850, "loadText": "2 850 обучающихся в I полугодии 2025/2026 — там же", "url": "https://realnoevremya.ru/articles/390768-v-novyh-mikrorayonah-kazani-shkoly-rabotayut-s-troynoy-perezgruzkoy"},
+  {"id": "sc107", "capacity": 1224, "capacityText": "проектная мощность 1 224 места; новое здание открыто 01.09.2023 — «Реальное время», 289677 (сверено 02.10.2026)", "url": "https://realnoevremya.ru/news/289677-v-kazani-otkryli-chetyre-novye-shkoly"},
+  {"id": "sc179", "capacity": 1375, "capacityText": "школа рассчитана на 1 375 учащихся; открыта 01.09.2015 — Татар-информ, 20.08.2015", "url": "https://www.tatar-inform.ru/news/2015/08/20/468125"}
+]

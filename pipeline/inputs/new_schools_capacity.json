@@ -1,0 +1,617 @@
+[
+ {
+  "name": "Гимназия №179 — Центр образования («Школа-город»)",
+  "number": 179,
+  "district": "Ново-Савиновский",
+  "opened": 2015,
+  "capacity": 1375,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/2015/08/20/468125",
+  "quote": "откроет свои двери новая школа №179, рассчитанная на 1375 учащихся",
+  "note": "Ул. Бондаренко / Абсалямова; самая большая школа РТ на момент открытия; открыта 1 сентября 2015 (дата в URL статьи 2015/08/20).",
+  "alt": [
+   {
+    "url": "https://www.tatar-inform.ru/news/samaya-bolshaya-shkola-tatarstana-otkrylas-v-kazani",
+    "quote": "в которой могут обучаться 1375 учащихся",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Лицей — Инженерный центр",
+  "number": null,
+  "district": "Советский",
+  "opened": 2016,
+  "capacity": 320,
+  "kind": "перерегистрация",
+  "url": "https://www.business-gazeta.ru/news/130253",
+  "quote": "Проектная мощность лицея составит 320 человек",
+  "note": "Не новое здание: капремонт здания прогимназии №29 (ул. Аделя Кутуя, 114). Статья от 14.04.2015 планировала открытие в сентябре 2015; юрлицо создано постановлением Исполкома №2800 от 13.07.2016 и зарегистрировано 23.11.2016, поэтому opened=2016. Цифра 320 — проектная мощность на 14 классов 5–11 + подготовительные. Страница business-gazeta из этой среды curl не открывается (нужен прокси/VPN), цитата получена через WebFetch.",
+  "alt": [
+   {
+    "url": "https://www.rusprofile.ru/id/10775526",
+    "quote": "зарегистрировано 23 ноября 2016 года в Казани",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": false
+ },
+ {
+  "name": "Многопрофильная полилингвальная гимназия №180",
+  "number": 180,
+  "district": "Советский",
+  "opened": 2017,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/rustam-minnihanov-otkryl-novuyu-mnogoprofilnuyu-polilingvalnuyu-gimnaziyu-v-kazani-570329",
+  "quote": "Многопрофильная полилингвальная гимназия № 180 рассчитана на 1224 места.",
+  "note": "Пр. Победы, 212в (2-я Азинская); открыта 1 сентября 2017 (дата публикации статьи 2017-09-01).",
+  "alt": [
+   {
+    "url": "https://metshin.com/ru/posts/18572",
+    "quote": "гимназия, рассчитанная на 1224 учащихся.",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильная школа №181",
+  "number": 181,
+  "district": "Советский",
+  "opened": 2017,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://metshin.ru/ru/posts/18567",
+  "quote": "Новая многопрофильная школа рассчитана на 1224 ученика.",
+  "note": "ЖК «Седьмое небо». На странице metshin.ru года нет; 1 сентября 2017 подтверждено датой статьи АиФ. kzn.ru 20.04.2018: «Только в прошлом году в городе открылись две современные школы на 1224 мест каждая» (180 и 181).",
+  "opened_src": {
+   "url": "https://kazan.aif.ru/society/details/v_zhk_sedmoe_nebo_otkrylas_shkola_181",
+   "quote": "За парты нового учебного учреждения сели более 700 учеников, 200 из которых – первоклассники.",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Политехнический лицей №182",
+  "number": 182,
+  "district": "Кировский",
+  "opened": 2018,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://mon.tatarstan.ru/index.htm/news/1273067.htm",
+  "quote": "Новое учебное заведение рассчитано на 1224 школьника, 53 класса.",
+  "note": "ЖК «Салават Купере». Район — по реестру лицензий. Основное здание 2018. В 2023 добавлен корпус на 1501 (см. отдельную строку); суммарная проектная мощность лицея 2725 (kzn.ru 14.11.2023).",
+  "opened_src": {
+   "url": "https://mon.tatarstan.ru/index.htm/news/1273067.htm",
+   "quote": "1 сентября 2018",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №183",
+  "number": 183,
+  "district": "Советский",
+  "opened": 2018,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/novaya-kazanskaya-gimnaziya-183-nachala-pervyy-uchebnyy-god-624748",
+  "quote": "Здесь будут обучаться 1224 ребенка.",
+  "note": "Ул. Минская, 47 (Азино-2); открыта 1 сентября 2018 (дата статьи 2018-09-01). Фактически учится ~2200–2600 (перегруз).",
+  "alt": [
+   {
+    "url": "https://metshin.ru/ru/posts/19934",
+    "quote": "рассчитана на 1224 человека.",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №184 им. М.И. Махмутова",
+  "number": 184,
+  "district": "Советский",
+  "opened": 2018,
+  "capacity": 800,
+  "kind": "новое здание",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/novaya-shkola-v-zhk-svetlaya-dolina-prinyala-pervykh-446-uchenikov/",
+  "quote": "Учебное заведение на 800 мест носит имя выдающегося деятеля системы образования – академика Мирзы Махмутова.",
+  "note": "ЖК «Светлая долина», ул. А. Курынова, 11а; 1 сентября 2018 (дата статьи 2018-09-01). Рядом тогда планировали второй корпус на 1224, в 2023 построен корпус на 1501 (см. отдельную строку).",
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильный лицей №185",
+  "number": 185,
+  "district": "Советский",
+  "opened": 2019,
+  "capacity": 1501,
+  "kind": "новое здание",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-sovetskom-rayone-kazani-otkrylas-samaya-bolshaya-v-tatarstane-shkola/",
+  "quote": "Учебное заведение, рассчитанное на 1501 ученика, стало самым большим в Татарстане.",
+  "note": "ЖК «Весна», ул. Фикрята Табеева, 4; 2 сентября 2019 (дата статьи 2019-09-02). Фактически ~3000 учеников (tatar-inform 09.04.2024).",
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильный лицей №186 «Перспектива»",
+  "number": 186,
+  "district": "Приволжский",
+  "opened": 2019,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-privolzhskom-rayone-kazani-otkrylsya-mnogoprofilnyy-litsey-186-perspektiva-na-1224-mesta/",
+  "quote": "открылся многопрофильный лицей №186 «Перспектива» на 1224 места",
+  "note": "Ул. Рауиса Гареева (ЖК «Соловьиная роща»); 2 сентября 2019 (дата статьи 2019-09-02). В 2023 добавлен корпус на 1501 (см. отдельную строку), всего 2725.",
+  "alt": [
+   {
+    "url": "https://urban-media.ru/blog/gorod/solnechnyy-gorod-kak-kamennye-dzhungli-prevrashchayutsya-v-semeynyy-kvartal/",
+    "quote": "Многопрофильный лицей №186 «Перспектива» на 1200 мест",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №93 им. А.С. Пушкина — пристрой «Лукоморье»",
+  "number": 93,
+  "district": "Советский",
+  "opened": 2019,
+  "capacity": null,
+  "kind": "корпус/пристрой",
+  "url": "https://www.tatar-inform.ru/news/burganov-ob-obnovlennoy-gimnazii-93-kazani-ona-stanet-tsentrom-razvitiya-russkogo-yazyka-661097",
+  "quote": "в пристройке «Лукоморье» площадью 2 тыс. кв. метров появились аудитории, творческие студии и актовый зал на 367 мест",
+  "note": "Мощность пристроя в ученических местах не найдена: только площадь ~2 тыс. кв. м и актовый зал на 367 мест (это не вместимость школы). Открыт 2 сентября 2019 (дата статьи). Район Советский — по справочникам (в статье не указан).",
+  "quote_verified": true
+ },
+ {
+  "name": "СОШИ «СОлНЦе» — новый пристрой",
+  "number": null,
+  "district": "Вахитовский",
+  "opened": 2019,
+  "capacity": null,
+  "kind": "корпус/пристрой",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/ilsur-metshin-osmotrel-novyy-pristroy-k-shkole-solntse/",
+  "quote": "появился пристрой площадью почти 2,5 тыс. кв. м",
+  "note": "Мощность в местах не найдена (в источниках: площадь ~2,5 тыс. кв. м, обеденный зал на 84 места). Пристрой осмотрен 6 сентября 2019.",
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильный лицей №187 «Ритм»",
+  "number": 187,
+  "district": "Советский",
+  "opened": 2020,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/ilsur-metshin-eto-ne-shourum-ne-pokazatelnyy-primer-eto-standartnaya-munitsipalnaya-shkola/",
+  "quote": "Здание площадью 24,6 тыс. кв.м рассчитано на 1224 ученика.",
+  "note": "Ул. Назиба Жиганова, 4 (ЖК «Мой Ритм»); предварительный осмотр/открытие 13.08.2020, учебный год с 1 сентября 2020 (kzn.ru 2020-09-01: «открылся многопрофильный лицей №187 «Ритм»»). Фактически ~1800 учеников.",
+  "alt": [
+   {
+    "url": "https://sdelanounas.ru/blogs/134960/",
+    "quote": "В нем смогут обучаться 1224 человека, в этом году лицей примет 650 учеников.",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "«Адымнар» — полилингвальная школа на ул. Бондаренко",
+  "number": "165 (комплекс «Адымнар»)",
+  "district": "Ново-Савиновский",
+  "opened": 2020,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-kazani-otkrylsya-pervyy-polilingvalnyy-kompleks-adymnar-put-k-znaniyam-i-soglasiyu/",
+  "quote": "новую полилингвальную на улице Бондаренко на 1224 места",
+  "note": "Республиканский (ГАОУ), не муниципальная; комплекс создан на базе школы №165. В составе школы на Бондаренко — интернат на 240 мест. Открыт 1 сентября 2020 (дата статьи 2020-09-01).",
+  "alt": [
+   {
+    "url": "https://www.tatar-inform.ru/news/science/01-09-2020/pervyy-polilingvalnyy-obrazovatelnyy-kompleks-adymnar-otkryli-v-kazani-5767797",
+    "quote": "новую полилингвальную на улице Бондаренко на 1224 места",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "«Адымнар» — билингвальная школа на ул. Бичурина",
+  "number": "165 (комплекс «Адымнар»)",
+  "district": "Ново-Савиновский",
+  "opened": 2020,
+  "capacity": 800,
+  "kind": "новое здание",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-kazani-otkrylsya-pervyy-polilingvalnyy-kompleks-adymnar-put-k-znaniyam-i-soglasiyu/",
+  "quote": "новую билингвальную на улице Бичурина на 800 мест",
+  "note": "Республиканский (ГАОУ); корпус комплекса «Адымнар» на ул. Абдуллы Бичурина. Открыт 1 сентября 2020. Ранее называлась «пристроем к школе №165».",
+  "alt": [
+   {
+    "url": "https://kzn.ru/meriya/press-tsentr/novosti/ilsur-metshin-eto-ne-shourum-ne-pokazatelnyy-primer-eto-standartnaya-munitsipalnaya-shkola/",
+    "quote": "с дополнительным корпусом на Бичурина на 800 мест",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "«Адымнар» — реконструированная начальная школа (бывш. школа №165)",
+  "number": 165,
+  "district": "Ново-Савиновский",
+  "opened": 2020,
+  "capacity": 480,
+  "kind": "не новая",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-kazani-otkrylsya-pervyy-polilingvalnyy-kompleks-adymnar-put-k-znaniyam-i-soglasiyu/",
+  "quote": "реконструированную начальную на 480 мест",
+  "note": "Реконструкция существующей школы №165, новых мест сверх прежних не подсчитано — в суммы по годам не входит.",
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильная гимназия №189 «Заман»",
+  "number": 189,
+  "district": "Кировский",
+  "opened": 2021,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/v-kazanskom-zhk-salavat-kupere-otkrylas-novaya-gimnaziya-zaman-5806090",
+  "quote": "Рассчитанная на 1224 учеников гимназия расположена по адресу: ул. Альфии Авзаловой, д. 10.",
+  "note": "ЖК «Салават Купере». Открыта 12.02.2021 (первые ~300 учеников 1–4 классов), в полную силу — с 1 сентября 2021. Район — по реестру лицензий.",
+  "alt": [
+   {
+    "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-zhilom-massive-salavat-kupere-otkrylas-gimnaziya-189-zaman/",
+    "quote": "открылась многопрофильная гимназия №189 «Заман»",
+    "quote_verified": true
+   }
+  ],
+  "opened_src": {
+   "url": "https://mon.tatarstan.ru/index.htm/news/2000458.htm",
+   "quote": "1 сентября также в полную силу заработает гимназия №189 «Заман»",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильный лицей №188 «Бионика»",
+  "number": 188,
+  "district": "Кировский",
+  "opened": 2021,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-mikrorayone-salavat-kupere-otkrylsya-litsey-188-bionika-na-1224-mesta/",
+  "quote": "открылся лицей №188 «Бионика» на 1224 места",
+  "note": "ЖК «Салават Купере», ул. Ильгама Шакирова; 1 сентября 2021 (дата статьи 2021-09-01). Район — по реестру лицензий. tatcenter ошибочно пишет 1 244 (опечатка).",
+  "alt": [
+   {
+    "url": "https://tatcenter.ru/news/v-kazani-segodnya-otkryty-dve-novye-shkoly/",
+    "quote": "лицей № 188 «Бионика» на 1 244 места",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильный лицей №11 «Унбер»",
+  "number": 11,
+  "district": "Советский",
+  "opened": 2021,
+  "capacity": 1501,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/farid-muxametsin-otkryl-v-kazani-mnogoprofilnyi-licei-unber-na-15-tys-mest-5834586",
+  "quote": "новый многопрофильный лицей № 11 «Унбер», рассчитанный на 1501 учащегося",
+  "note": "ЖК «Арт Сити», пр. Юнуса Ахметзянова; 1 сентября 2021 (дата статьи 2021-09-01). Номер 11 — не новая нумерация, учреждение новое.",
+  "alt": [
+   {
+    "url": "https://tatcenter.ru/news/v-kazani-segodnya-otkryty-dve-novye-shkoly/",
+    "quote": "Унбер» на 1 501 место",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №18 (татарская) — новый корпус на ул. Кул Гали",
+  "number": 18,
+  "district": "Приволжский",
+  "opened": 2022,
+  "capacity": 300,
+  "kind": "корпус/пристрой",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/i-metshin-etot-korpus-gorazdo-bolshe-chem-sama-shkola/",
+  "quote": "Новый дополнительный корпус на ул.Кул Гали будет рассчитан на 300 человек",
+  "note": "Корпус ~11 тыс. кв. м; проектная мощность самой гимназии 240 (при 585 учениках). Открытие 1 сентября 2022 — по KP.RU (ссылка в opened_src); kzn.ru от 15.02.2022 — стадия строительства.",
+  "opened_src": {
+   "url": "https://www.kazan.kp.ru/online/news/4905653/",
+   "quote": "появился новый корпус, благодаря чему количество учащихся там удалось увеличить на 300 человек",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №107 «Открытие» (новое здание на ул. Сибгата Хакима, 49/8)",
+  "number": 107,
+  "district": "Ново-Савиновский",
+  "opened": 2023,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://realnoevremya.ru/news/289677-v-kazani-otkryli-chetyre-novye-shkoly",
+  "quote": "Она рассчитана на 1 224 учеников.",
+  "note": "Учреждение существует с 1998 (ЕГРЮЛ; прежний адрес Гвардейская, 4); 1 сентября 2023 получило новое здание на 1224 — считаем новым зданием, а не новой школой. Остается ли старое здание в работе — не выяснено.",
+  "alt": [
+   {
+    "url": "https://kzn.ru/meriya/press-tsentr/novosti/v-novo-savinovskom-rayone-kazani-k-sleduyushchemu-uchebnomu-godu-sdadut-shkolu-na-1224-mesta/",
+    "quote": "откроется новая школа вместимостью 1224 ученика",
+    "quote_verified": true
+   },
+   {
+    "url": "https://www.tatar-inform.ru/news/novye-skoly-i-uroki-muzestva-ot-geroev-rossii-kak-v-tatarstane-prosel-den-znanii-5918205",
+    "quote": "Образовательное учреждение рассчитано почти на 1,3 тыс. учеников.",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Политехнический лицей №182 — новый корпус",
+  "number": 182,
+  "district": "Кировский",
+  "opened": 2023,
+  "capacity": 1501,
+  "kind": "корпус/пристрой",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/ilsur-metshin-v-etom-godu-v-kazani-otkroyutsya-chetyre-shkoly-eto-rekord/",
+  "quote": "продолжается строительство школ в жилом районе Салават Купере и на ул.Рауиса Гареева на 1501 место каждая",
+  "note": "Корпус для 5–11 классов; открыт 1 сентября 2023. Цифра 1501 — из kzn.ru 20.06.2023 (стройка); tatar-inform в день открытия пишет «рассчитан на 1,5 тыс.». Основное здание 1224 + корпус 1501 = 2725 (kzn.ru 14.11.2023: «проектной мощности 2725 мест»).",
+  "opened_src": {
+   "url": "https://www.tatar-inform.ru/news/ne-zdanie-a-fantastika-muxametsin-otkryl-novyi-korpus-liceya-v-salavat-kupere-5918152",
+   "quote": "Его новый корпус рассчитан на 1,5 тыс. учеников и возведен в рекордно короткие сроки.",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Лицей №186 «Перспектива» — новый корпус на ул. Рауиса Гареева",
+  "number": 186,
+  "district": "Приволжский",
+  "opened": 2023,
+  "capacity": 1501,
+  "kind": "корпус/пристрой",
+  "url": "https://www.tatar-inform.ru/news/s-sentyabrya-skolniki-liceya-186-privolzskogo-raiona-kazani-nacnut-ucitsya-v-dvux-korpusax-5893300",
+  "quote": "Он рассчитан на 1501 место и значительно разрузит основное здание",
+  "note": "Открыт 1 сентября 2023 (одна из «четырёх новых школ на 6 тыс.»). Источник цифры — tatar-inform 17.01.2023 (стройка 56%); kzn.ru 20.06.2023 также «на ул.Рауиса Гареева на 1501 место».",
+  "opened_src": {
+   "url": "https://www.tatar-inform.ru/news/metsin-k-1-sentyabrya-v-kazani-otkroyutsya-tri-novye-skoly-5932684",
+   "quote": "К учебном году 2023-2024 в Казани открыли четыре школы на 6 тысяч учеников",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №184 — новый корпус на ул. Курынова (11б)",
+  "number": 184,
+  "district": "Советский",
+  "opened": 2023,
+  "capacity": 1501,
+  "kind": "корпус/пристрой",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/ilsur-metshin-v-etom-godu-v-kazani-otkroyutsya-chetyre-shkoly-eto-rekord/",
+  "quote": "Новое здание на 1501 место возводится по национальному проекту «Образование».",
+  "note": "ЖК «Светлая долина»; для 5–11 классов, старый корпус (800) — 1–4 классы. Открыт 1 сентября 2023 (tatar-inform 18.01.2024 причисляет корпус гимназии №184 к открытым в 2023). Прямой цитаты «открыт корпус 1501» не найдено, цифра — по стройке июня 2023; 800 + 1501 = 2301 ≈ «2,3 тыс. мест» (Business Online).",
+  "opened_src": {
+   "url": "https://www.tatar-inform.ru/news/metsin-k-1-sentyabrya-v-kazani-otkroyutsya-tri-novye-skoly-5932684",
+   "quote": "корпусы гимназий №184, №107, лицеев №182, №186",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №19 — новый корпус",
+  "number": 19,
+  "district": "Приволжский",
+  "opened": 2024,
+  "capacity": 300,
+  "kind": "корпус/пристрой",
+  "url": "https://kzn.ru/meriya/press-tsentr/novosti/k-1-dekabrya-v-kazani-otkroetsya-novyy-pristroy-k-gimnazii-19/",
+  "quote": "В нем смогут обучаться 300 школьников.",
+  "note": "Не 1 сентября: корпус сдан в конце 2023, занятия начались в январе 2024 (tatar-inform 18.01.2024). Основное здание на 800 мест, учится 1813.",
+  "alt": [
+   {
+    "url": "https://www.tatar-inform.ru/news/v-kazani-postroyat-dopolnitelnyi-korpus-gimnazii-19-za-368-mln-rublei-5918282",
+    "quote": "Новый корпус будет рассчитан на 280 мест.",
+    "quote_verified": true
+   }
+  ],
+  "opened_src": {
+   "url": "https://www.tatar-inform.ru/news/metsin-k-1-sentyabrya-v-kazani-otkroyutsya-tri-novye-skoly-5932684",
+   "quote": "Занятия в новом здании начались с понедельника.",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Эколого-технологический лицей №79 «Родина»",
+  "number": 79,
+  "district": "Советский",
+  "opened": 2024,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/eto-samyi-uvlekatelnyi-period-zizni-pervoklaskami-v-tatarstane-stali-53-tys-detei-5957267",
+  "quote": "Лицей «Родина» на 1224 места расположился на одноименной улице.",
+  "note": "Рядом с ЖК «Новые Горки»; линейка 2 сентября 2024 (план был 1 сентября: realnoevremya 27.04.2024).",
+  "alt": [
+   {
+    "url": "https://realnoevremya.ru/news/307979-v-sovetskom-rayone-kazani-poyavitsya-novaya-shkola",
+    "quote": "рядом с ЖК «Новые Горки» на улице Родины завершается строительство школы на 1224 места",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Естественно-научный лицей №95 «Икән»",
+  "number": 95,
+  "district": "Советский",
+  "opened": 2024,
+  "capacity": 1501,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/eto-samyi-uvlekatelnyi-period-zizni-pervoklaskami-v-tatarstane-stali-53-tys-detei-5957267",
+  "quote": "Он расположен в казанском жилом комплексе «Весна-2» в Советском районе и может принять 1501 ученика.",
+  "note": "ЖК «Весна-2», ул. Азата Аббасова, 15; 2 сентября 2024. Мэр: рядом школа №185 на 1501 перегружена (~3000 учеников).",
+  "alt": [
+   {
+    "url": "https://www.tatar-inform.ru/news/stroyashhiisya-po-nacproektu-licei-v-zk-vesna-2-budet-vozveden-k-nacalu-ucebnogo-goda-5942513",
+    "quote": "Поэтому нами было принято решение построить школу также на 1501 место.",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Многопрофильный лицей №133 «Гаилә»",
+  "number": 133,
+  "district": "Приволжский",
+  "opened": 2024,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://www.tatar-inform.ru/news/eto-samyi-uvlekatelnyi-period-zizni-pervoklaskami-v-tatarstane-stali-53-tys-detei-5957267",
+  "quote": "Лицей «Гаилә» может вместить 1224 учащихся.",
+  "note": "Микрорайон М-14; линейка 2 сентября 2024 (в одном источнике — 1 сентября). Район — по реестру лицензий.",
+  "alt": [
+   {
+    "url": "https://mon.tatarstan.ru/index.htm/news/2322274.htm",
+    "quote": "Мэр Казани проинспектировал ход работ в учреждении на 1224 места",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Татарская гимназия №2 им. Ш. Марджани — новый корпус (школа наставничества)",
+  "number": 2,
+  "district": "Московский",
+  "opened": 2024,
+  "capacity": 270,
+  "kind": "корпус/пристрой",
+  "url": "https://www.tatar-inform.ru/news/novyi-korpus-tatarskoi-gimnazii-2-v-kazani-zaversat-k-1-sentyabrya-5952560",
+  "quote": "Ожидается, что здание, рассчитанное на 270 учащихся, существенно разгрузит основное",
+  "note": "Ул. Шамиля Усманова, 11. Срок — к 1 сентября 2024; открытие в 2024 подтверждено итогами года (mon.tatarstan.ru, opened_src). Точная дата начала занятий в корпусе не найдена.",
+  "alt": [
+   {
+    "url": "https://mon.tatarstan.ru/index.htm/news/2335666.htm",
+    "quote": "Здание рассчитано на 270 школьников.",
+    "quote_verified": true
+   }
+  ],
+  "opened_src": {
+   "url": "https://mon.tatarstan.ru/index.htm/news/2388358.htm",
+   "quote": "и дополнительный корпус гимназии №2",
+   "quote_verified": true
+  },
+  "quote_verified": true
+ },
+ {
+  "name": "Физико-математический лицей №123",
+  "number": 123,
+  "district": "Советский",
+  "opened": 2025,
+  "capacity": 1224,
+  "kind": "новое здание",
+  "url": "https://rt-online.ru/news/tolko-v-pervuiu-smenu-v-kazani-i-nabereznyx-celnax-posle-osennix-kanikul-otkryli-novye-skoly-532535",
+  "quote": "Трехэтажное здание лицея рассчитано на 1224 ученика.",
+  "note": "ЖК «Лето», ул. Анаса Тазетдинова, 8Б. План — 1 сентября 2025 (rt.rbc.ru 04.08.2025), фактически открыт 7 ноября 2025 после осенних каникул; «единственная школа, которую построили в этом году в городе».",
+  "alt": [
+   {
+    "url": "https://mon.tatarstan.ru/index.htm/news/2466333.htm",
+    "quote": "на 1224 места. Объект возведен в рамках национального проекта «Молодёжь и дети».",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "Гимназия №175",
+  "number": 175,
+  "district": "Советский",
+  "opened": null,
+  "capacity": null,
+  "kind": "не новая",
+  "url": "https://tatcenter.ru/news/v-kazani-segodnya-otkryty-dve-novye-shkoly/",
+  "quote": "двери вновь откроет полностью реконструированная гимназия № 175",
+  "note": "Школа основана в 2006 (edu.tatar.ru, паспорт: «Год основания учреждения: 2006»); после нападения 11.05.2021 здание полностью реконструировано, вновь открыто 1 сентября 2021. Проектная мощность не найдена.",
+  "quote_verified": true
+ },
+ {
+  "name": "Прогимназия №360",
+  "number": 360,
+  "district": "Ново-Савиновский",
+  "opened": null,
+  "capacity": null,
+  "kind": "не новая",
+  "url": "https://www.kazan.kp.ru/online/news/4905653/",
+  "quote": "Это гимназия №18, школы №№143 и 173, лицей №131 и прогимназия №360",
+  "note": "1 сентября 2022 открыта после капитального ремонта (не новое здание). Год основания и проектная мощность не найдены.",
+  "quote_verified": true
+ },
+ {
+  "name": "Лицей №177",
+  "number": 177,
+  "district": "Ново-Савиновский",
+  "opened": null,
+  "capacity": 864,
+  "kind": "не новая",
+  "url": "https://metshin.ru/ru/posts/409",
+  "quote": "школа № 177 рассчитана на 864 учащихся (36 классов)",
+  "note": "Открыта задолго до 2015 (на открытии — Президент РТ М. Шаймиев, т.е. до 2010); в диапазон 2015–2026 не входит, в суммы не включена.",
+  "quote_verified": true
+ },
+ {
+  "name": "Лицей №35 — образовательный центр «Галактика»",
+  "number": 35,
+  "district": "Приволжский",
+  "opened": 2012,
+  "capacity": 1100,
+  "kind": "не новая",
+  "url": "https://urban-media.ru/blog/gorod/solnechnyy-gorod-kak-kamennye-dzhungli-prevrashchayutsya-v-semeynyy-kvartal/",
+  "quote": "Образовательный центр «Галактика» (Лицей №35) на 1100 мест",
+  "note": "ЖК «Солнечный город»; юрлицо зарегистрировано 12.11.2012 (rusprofile) — до диапазона 2015–2026, в суммы не включен. Мощность 1100 — вторичный источник (Урбан Медиа 2022), официальной цитаты нет.",
+  "alt": [
+   {
+    "url": "https://www.rusprofile.ru/id/6734986",
+    "quote": "МБОУ «Лицей №35» зарегистрировано в Казани 12 ноября 2012 года",
+    "quote_verified": true
+   }
+  ],
+  "quote_verified": true
+ },
+ {
+  "name": "СОШ №73",
+  "number": 73,
+  "district": "Приволжский",
+  "opened": 2015,
+  "capacity": null,
+  "kind": "перерегистрация",
+  "url": "https://www.rusprofile.ru/id/10203474",
+  "quote": "МБОУ \"СОШ №73\" зарегистрирована в Казани 3 ноября 2015 года",
+  "note": "Создана в 2015 постановлением Исполкома об изменении сети учреждений (по данным поиска; постановление не открывалось); ул. Роторная, 7 — здание, где сегодня и частная Международная школа Казани, т.е. не новое здание. Проектная мощность не найдена.",
+  "quote_verified": true
+ },
+ {
+  "name": "Основная школа №30",
+  "number": 30,
+  "district": "Ново-Савиновский",
+  "opened": 2015,
+  "capacity": null,
+  "kind": "перерегистрация",
+  "url": "https://www.rusprofile.ru/id/7817437",
+  "quote": "зарегистрирована 25 сентября 2015 года в Казани",
+  "note": "Только дата регистрации юрлица (25.09.2015, ул. Октябрьская, 23б); признаков нового здания нет, вероятно изменение сети 2015/16. Мощность не найдена.",
+  "quote_verified": true
+ },
+ {
+  "name": "СОШИ «СОлНЦе» (специализированная школа-интернат)",
+  "number": null,
+  "district": "Вахитовский",
+  "opened": 2013,
+  "capacity": null,
+  "kind": "не новая",
+  "url": "https://www.rusprofile.ru/id/6959190",
+  "quote": "МАОУ СОШИ \"Солнце\" действует с 10 июля 2013 года и зарегистрирована в Казани.",
+  "note": "Открыта в 2013 в старом здании (1992–2000 там была школа) — до диапазона; новый пристрой 2019 — отдельная строка (мощность не найдена).",
+  "quote_verified": true
+ }
+]

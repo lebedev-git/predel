@@ -103,8 +103,9 @@ FLATS_PER_M2 = 0.0129
 by_street, info, estimated = {}, {}, 0
 for oid, st, hnum, fl, kind, yr, cx, cy, lv, area in OSM:
     f = int(fl) if fl.isdigit() else 1 if kind in IZHS else 0
-    if not f and kind in ('apartments', 'residential', 'dormitory') and lv.isdigit() and int(lv) >= 3:
-        f = round(area * int(lv) * FLATS_PER_M2); estimated += 1
+    if not f and kind in ('apartments', 'residential', 'dormitory') and (not lv.isdigit() or int(lv) >= 3):
+        # ponytail: без этажности — 10 этажей (медиана многоквартирных домов района после 2010); в Советском таких 13
+        f = round(area * (int(lv) if lv.isdigit() else 10) * FLATS_PER_M2); estimated += 1
     m = re.search(r'(19\d\d|20[0-3]\d)', yr)
     info[oid] = (f, int(m.group(1)) if m else None, cx, cy)
     by_street.setdefault(toks(st), []).append((hn(hnum), oid))

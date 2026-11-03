@@ -179,7 +179,7 @@ function births(y: number) {
   return BIRTHS[Math.min(Math.max(y, Math.min(...ys)), Math.max(...ys))]
 }
 /** Когорта: сумма родившихся в годах, чьи дети в году y попадают в возрастную группу [a, b]. */
-const cohort = (y: number, a: number, b: number) => sum(Array.from({ length: b - a + 1 }, (_, i) => births(y - a - i)))
+export const cohort = (y: number, a: number, b: number) => sum(Array.from({ length: b - a + 1 }, (_, i) => births(y - a - i)))
 
 /** Электрическая нагрузка на квартиру по числу квартир — линейная интерполяция табл. 7.1 СП 256. */
 export function powerPerApt(n: number, stoves: 'gas' | 'electric') {

@@ -1,11 +1,14 @@
 # Вход единой модели (src/model/forecast.ts) для района Казани → public/data/<файл>.
 # Запуск из рабочей папки C:/tmp/kzn:  python <репозиторий>/pipeline/kzn/forecast_input.py sovetsky Советский azino-forecast.json
+#   (абсолютный путь вместо имени файла — запись туда; весь город — combine_city.py)
 #   закрепление домов — kazan.fulledu.ru/shkola-po-propiske/<район>/ (адреса по постановлению ИКМО о закреплении), кэш <район>/pages/;
 #   дома — OSM, выгрузка C:/tmp/demo/kzn/goroda/tatarstan.osm.pbf (квартиры building:flats, частный дом = 1 квартира,
-#     год ввода start_date / building:year, центр контура), кэш <район>/osm.json;
+#     год ввода start_date / building:year, центр контура), кэш osm_kazan.json на весь город;
 #   школы — kazan_schools.json (ИНН, координаты, факт учеников edu.tatar.ru на 01.10.2026);
 #     год открытия и проектная мощность новых школ — inputs/new_schools_capacity.json (цитаты новостей);
-#   ученики 2016–2025 — госзадания bus.gov.ru (план на год, nsav/bus_city.json), 2026 — факт edu.tatar.ru.
+#   ученики 2016–2025 — госзадания bus.gov.ru (план на год, nsav/bus_city.json), 2026 — факт edu.tatar.ru;
+#   год ввода и квартиры многоквартирных домов — региональная программа капремонта, открытые данные АИС «ФРТ»
+#     (бывшая Реформа ЖКХ): аис.фрт.рф/opendata/export/220 по Татарстану, файл frt/export_220.zip (выгрузка 01.11.2026).
 # Квартиры дома за двумя школами делятся пополам. Прогимназии (только 1–4 классы) не берём: модель считает детей 7–17.
 import html, json, pathlib, re, subprocess, sys, time
 
@@ -70,9 +73,8 @@ for slug in slugs:
     schools.append(sc)
 
 # --- дома OSM из выгрузки ---
-lon = [s['coords'][0] for s in schools]; lat = [s['coords'][1] for s in schools]
-BB = (min(lat) - 0.03, min(lon) - 0.05, max(lat) + 0.03, max(lon) + 0.05)
-osm_path = WORK / 'osm.json'
+BB = (55.65, 48.80, 55.95, 49.35)  # Казань целиком: один кэш на все районы
+osm_path = pathlib.Path('osm_kazan.json')
 if not osm_path.exists():
     import osmium
     out = []
@@ -100,8 +102,22 @@ IZHS = {'house', 'detached', 'semidetached_house'}
 # многоквартирный дом без building:flats (так почти у всех новостроек) — квартиры по площади этажей: 0,0129 кв. на м²
 # контура × этаж (медиана по 2 838 домам Советского района с указанными квартирами, квартили 0,0096–0,0157)
 FLATS_PER_M2 = 0.0129
-by_street, info, estimated = {}, {}, 0
+# реестр капремонта: год ввода есть у всех МКД Казани, квартиры — у 88% (у введённых в 2020-х — у 108 из 273)
+import csv, io, zipfile
+z = zipfile.ZipFile('frt/export_220.zip')
+FRT = {}
+for r in csv.DictReader(io.StringIO(z.read(z.namelist()[0]).decode('utf-8-sig')), delimiter=';'):
+    if 'Казань' not in r['mun_obr'] or ', д. ' not in r['address']: continue
+    street, _, rest = r['address'].partition(', д. ')
+    num, _, korp = rest.partition(', корп. ')
+    FRT[(toks(street), hn(num.split(',')[0] + ('к' + korp.split(',')[0] if korp else '')))] = (
+        int(r['commission_year']) if r['commission_year'].isdigit() else None,
+        int(r['living_rooms_amount']) if r['living_rooms_amount'].isdigit() else 0)
+by_street, info, estimated, from_frt = {}, {}, 0, {'год': 0, 'квартиры': 0}
 for oid, st, hnum, fl, kind, yr, cx, cy, lv, area in OSM:
+    fy, ff = FRT.get((toks(st), hn(hnum)), (None, 0))
+    if fy: yr = str(fy); from_frt['год'] += 1
+    if ff and not fl.isdigit(): fl = str(ff); from_frt['квартиры'] += 1
     f = int(fl) if fl.isdigit() else 1 if kind in IZHS else 0
     if not f and kind in ('apartments', 'residential', 'dormitory') and (not lv.isdigit() or int(lv) >= 3):
         # ponytail: без этажности — 10 этажей (медиана многоквартирных домов района после 2010); в Советском таких 13
@@ -111,6 +127,9 @@ for oid, st, hnum, fl, kind, yr, cx, cy, lv, area in OSM:
     by_street.setdefault(toks(st), []).append((hn(hnum), oid))
 streets = list(by_street)
 sts = lambda name: [s for s in streets if toks(name) and toks(name) <= s]
+# закрепление местное: дом дальше 4 км от школы — одноимённая улица в другом районе (кэш OSM на весь город)
+SC = {s['id']: s['coords'] for s in schools}
+near = lambda oid, slug: slug not in SC or ((info[oid][2] - SC[slug][0]) * 62.6) ** 2 + ((info[oid][3] - SC[slug][1]) * 111.2) ** 2 <= 16
 assign, miss = {}, {}
 for slug, c in C.items():
     for st, n, ks in c['houses']:
@@ -119,13 +138,15 @@ for slug, c in C.items():
             for h, oid in by_street[s]:
                 if (ks and h in [n + 'к' + k for k in ks]) or (not ks and (h == n or re.fullmatch(re.escape(n) + r'к\d+', h))): hits.append(oid)
             if ks and not hits: hits += [oid for h, oid in by_street[s] if h == n]
+        hits = [oid for oid in hits if near(oid, slug)]
         if not hits: miss[slug] = miss.get(slug, 0) + 1
         for oid in hits: assign.setdefault(oid, set()).add(slug)
     for st in c['full']:
         ss = sts(st)
         if not ss: miss[slug] = miss.get(slug, 0) + 1
         for s in ss:
-            for _, oid in by_street[s]: assign.setdefault(oid, set()).add(slug)
+            for _, oid in by_street[s]:
+                if near(oid, slug): assign.setdefault(oid, set()).add(slug)
 
 ids = {s['id'] for s in schools}
 houses, stat = [], {'без квартир': 0, 'без года (считаем старым)': 0}
@@ -156,13 +177,13 @@ for sc in schools: del sc['inn']
 
 json.dump({'district': f'{NAME} район', 'houses': houses, 'schools': schools, 'observed': observed,
            'columns': ['id', 'lon', 'lat', 'flats', 'year', 'school', 'prev'],
-           'notes': {'skipped': stat, 'flatsEstimated': estimated, 'outliers': outliers, 'skippedSchools': skipped_schools, 'missAddr': miss},
+           'notes': {'skipped': stat, 'flatsEstimated': estimated, 'fromFRT': from_frt, 'outliers': outliers, 'skippedSchools': skipped_schools, 'missAddr': miss},
            'sources': ['закрепление домов — kazan.fulledu.ru/shkola-po-propiske (по постановлению ИКМО г. Казани о закреплении)',
-                       'квартиры, год ввода, контуры — OpenStreetMap (выгрузка 01.10.2026); частный дом — 1 квартира; дом без года ввода считается старым',
+                       'контуры, квартиры, год ввода — OpenStreetMap (выгрузка 01.10.2026); год ввода и квартиры МКД — реестр капремонта АИС «ФРТ» (01.11.2026); частный дом — 1 квартира; дом без года ввода считается старым',
                        'год открытия и мощность новых школ — новости мэрии и СМИ (pipeline/inputs/new_schools_capacity.json)',
                        'ученики 2016–2025 — госзадания bus.gov.ru (план на год), 2026 — edu.tatar.ru, 01.10.2026']},
           open(REPO / 'public/data' / OUT, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-print('школ', len(schools), 'пропущены', skipped_schools, '| домов', len(houses), 'кв.', round(sum(h[3] for h in houses)), '|', stat, '| квартиры по площади:', estimated)
+print('школ', len(schools), 'пропущены', skipped_schools, '| домов', len(houses), 'кв.', round(sum(h[3] for h in houses)), '|', stat, '| квартиры по площади:', estimated, '| из реестра ФРТ:', from_frt)
 print('новые дома: после 2010', round(sum(h[3] for h in houses if h[4] > 2010)), 'кв., после 2015', round(sum(h[3] for h in houses if h[4] > 2015)), 'кв.')
 print('не найдено адресов:', sum(miss.values()), 'выбросы', outliers)
 for sc in schools: print(f"  {sc['name']:15} {'гимн/лиц' if sc['magnet'] else '':8} откр {sc['openYear']} мест {sc.get('design', '')}  {observed[sc['id']]}")

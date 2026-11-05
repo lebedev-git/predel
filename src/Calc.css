@@ -1,0 +1,86 @@
+/* Калькулятор школ (?view=calc). Шапка, .seg, .btn, .kpi — из App.css. */
+.calc { display: grid; grid-template: 58px 1fr / 290px 1fr 470px; height: 100vh; }
+.calc header { grid-column: 1 / -1; }
+.calc aside { background: var(--paper); overflow-y: auto; padding: 14px 16px 24px; }
+.calc aside.in { border-right: 1px solid var(--line); }
+.calc aside.out { border-left: 1px solid var(--line); }
+.calc h2 { font: 500 13px var(--display); letter-spacing: .06em; margin: 4px 0 10px; }
+.calc h2:not(:first-child) { margin-top: 22px; }
+.calc h3 { font-size: 13px; margin: 18px 0 6px; }
+.calc label { display: block; color: var(--ink-2); font-size: 12px; margin: 10px 0 0; }
+.calc label input:not([type=checkbox]), .calc label select { display: block; width: 100%; margin-top: 3px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); }
+.calc label.check { display: flex; gap: 8px; align-items: center; color: var(--ink); font-size: 13px; margin-top: 14px; }
+.calc .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.calc .hint { color: var(--ink-3); font-size: 11.5px; margin: 6px 0; }
+.calc .seg.small button { padding: 4px 10px; font-size: 12px; }
+
+.calc table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.calc th { text-align: left; font-weight: 500; color: var(--ink-3); font-size: 11px; padding: 3px 4px; }
+.calc td { padding: 3px 4px; border-top: 1px solid var(--paper-2); }
+.calc .phases { margin: 8px 0; }
+.calc .phases input { width: 100%; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--mono); }
+.calc .phases .x { border: 0; background: none; color: var(--ink-3); cursor: pointer; font-size: 16px; }
+.calc .kpf { margin-top: 10px; }
+.calc .kpf td, .calc .kpf th { text-align: right; font-family: var(--mono); }
+.calc .kpf td:first-child, .calc .kpf th:first-child { text-align: left; font-family: var(--body); }
+.calc .kpf .truth td { color: var(--ink-3); }
+
+.calc main { position: relative; display: grid; grid-template-rows: 1fr auto; min-height: 0; background: var(--paper-2); }
+.calc .wait { display: grid; place-content: center; color: var(--ink-2); }
+.calc .map { width: 100%; height: 100%; cursor: crosshair; display: block; }
+.calc .map .house { fill: var(--ink-3); }
+.calc .map .flow { stroke: var(--cobalt); stroke-opacity: .55; stroke-linecap: round; }
+.calc .map .sch { stroke: #fff; fill-opacity: .9; }
+.calc .map .sch.near { stroke: var(--ink); }
+.calc .map .sch.own { fill: none !important; }
+.calc .map .sch.own.ok { stroke: var(--ok); } .calc .map .sch.own.warn { stroke: var(--warn); } .calc .map .sch.own.crit { stroke: var(--crit); }
+.calc .map .zhk { fill: var(--cobalt); stroke: #fff; }
+.calc .map .zhk-t { fill: var(--cobalt); font-weight: 700; paint-order: stroke; stroke: #fff; }
+.calc .ok { fill: var(--ok); background: var(--ok); }
+.calc .warn { fill: var(--warn); background: var(--warn); }
+.calc .crit { fill: var(--crit); background: var(--crit); }
+.calc .unk { fill: var(--unknown); background: var(--unknown); }
+
+.calc .yearbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--paper); border-top: 1px solid var(--line); }
+.calc .yearbar input { flex: 1; min-width: 160px; max-width: 360px; accent-color: var(--cobalt); }
+.calc .yearbar b { font: 600 18px var(--mono); }
+.calc .keys { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; color: var(--ink-2); font-size: 11px; margin-left: auto; white-space: nowrap; }
+.calc .keys i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-left: 8px; }
+
+.calc .kpis { grid-template-columns: 1fr 1fr 1fr; margin-top: 0; }
+.calc .kpi b { font-size: 24px; }
+.calc .kpi s { text-decoration: none; color: var(--cobalt); }
+.calc .alert { background: #fdecea; color: var(--crit); border-radius: 8px; padding: 7px 10px; margin: 0 0 6px; font-weight: 500; }
+
+.calc .steps td, .calc .steps th { text-align: right; font-family: var(--mono); }
+.calc .steps td:first-child, .calc .steps th:first-child { text-align: left; font-family: var(--body); }
+.calc .steps tr.future td { color: var(--ink-3); }
+.calc .steps tfoot td { font-weight: 600; border-top: 1px solid var(--line); font-family: var(--body); }
+.calc .steps tfoot td:last-child { font-family: var(--mono); }
+
+.calc .kchart { width: 100%; height: auto; display: block; }
+.calc .kchart text { font-size: 9px; fill: var(--ink-3); }
+.calc .kchart .grid { stroke: var(--paper-2); }
+.calc .kchart .kids { stroke: var(--cobalt); stroke-width: 2.2; fill: none; }
+.calc .kchart .norm { stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 4 3; fill: none; }
+.calc .kchart .extra { stroke: var(--crit); stroke-width: 1.6; fill: none; }
+.calc .kchart .now { stroke: var(--ink-3); stroke-dasharray: 2 2; }
+
+.calc .schools td { vertical-align: top; padding: 6px 4px; }
+.calc .schools td:nth-child(2), .calc .schools td:nth-child(3) { text-align: right; font-family: var(--mono); white-space: nowrap; }
+.calc .schools small { display: block; color: var(--ink-3); font: 11px var(--body); }
+.calc .schools td:first-child small { display: inline; margin-left: 4px; }
+.calc .stripe { display: flex; gap: 1px; margin-top: 4px; }
+.calc .stripe i { flex: 1; height: 8px; border-radius: 1px; }
+.calc .stripe i.now { outline: 2px solid var(--ink); outline-offset: 0; height: 8px; }
+.calc .cap { border-bottom: 2px solid var(--ok); }
+.calc .cap.est { border-bottom: 2px dashed var(--uncertain); }
+.calc .cap.unk { border-bottom: 2px dotted var(--unknown); }
+.calc .src { color: var(--ink-3); font-size: 11px; margin-top: 14px; }
+.calc .steps td small { display: block; color: var(--ink-3); font-size: 10.5px; }
+.calc .steps td:first-child { white-space: nowrap; }
+.calc .ckeys { display: flex; align-items: center; gap: 6px; color: var(--ink-2); font-size: 11px; margin: 2px 0 0; }
+.calc .ckeys i { width: 16px; height: 0; display: inline-block; margin-left: 8px; border-top: 2px solid var(--cobalt); }
+.calc .ckeys i.norm { border-top: 2px dashed var(--ink); }
+.calc .ckeys i.extra { border-top-color: var(--crit); }
+.calc .map .sch-t { fill: var(--ink); font-weight: 600; paint-order: stroke; stroke: #fff; pointer-events: none; }

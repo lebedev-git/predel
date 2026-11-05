@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { birthFactor, calibrate, DEFAULT_PARAMS, expected, forecast, houseKids, prepare, shiftOf, type House, type Observed, type Params, type School } from './forecast'
-import type { LngLat } from './geo'
+import { at, demoCity, DEMO_YEARS, TRUE } from './demo'
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0)
-const at = (xKm: number, yKm: number): LngLat => [49.1 + xKm / 62.6, 55.75 + yKm / 111.2] // км → градусы у Казани
 
 describe('ядро прогноза: свойства', () => {
   const schools: School[] = [
@@ -67,58 +66,12 @@ describe('ядро прогноза: свойства', () => {
 })
 
 // ---------- Синтетический город ----------
-// Истина задана заранее. По ней генерируем «факт» учеников по школам 2016–2026 с шумом отчётности.
-// Модель видит то же, что мы в Казани: дома, школы, закрепление и число учеников по годам.
+// Истина задана заранее (demo.ts: TRUE). По ней сгенерирован «факт» учеников по школам 2016–2026 с шумом отчётности.
 // Подбираем параметры на 2016–2022 и проверяем: вернулись ли заложенные, верен ли прогноз 2023–2026.
 // Темп заселения модель берёт свой (50/80/95/100%), а истинный другой — проверка на неверное допущение.
 
-const TRUE: Params = { kpf: [0.165, 0.24, 0.33, 0.345, 0.3], pace: [0.4, 0.75, 0.95, 1], beta: 1, gamma: 1.5, alpha: 0.8 }
-const YEARS = Array.from({ length: 11 }, (_, i) => 2016 + i)
-const FIT = YEARS.filter(y => y <= 2022), TEST = YEARS.filter(y => y > 2022)
-
-function rng(seed: number) {
-  let a = seed >>> 0
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0
-    let t = a
-    t = Math.imul(t ^ (t >>> 15), t | 1)
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-/** Город 8×8 км: 16 старых школ (2 гимназии), 3 новых квартала со своей школой; школа третьего — гимназия, как № 107. */
-function syntheticCity(seed: number) {
-  const r = rng(seed)
-  const gauss = () => Math.sqrt(-2 * Math.log(r() || 1e-12)) * Math.cos(2 * Math.PI * r())
-  const int = (a: number, b: number) => a + Math.floor(r() * (b - a))
-  const xy: [number, number][] = [1, 3, 5, 7].flatMap(x => [1, 3, 5, 7].map(y => [x + 0.3 * gauss(), y + 0.3 * gauss()] as [number, number]))
-  const centers: [number, number][] = [[7.8, 7.8], [0.2, 7.8], [7.8, 0.2]]
-  const schools: School[] = [...xy, ...centers].map((p, j) => ({ id: `s${j}`, coords: at(...p), openYear: [2014, 2019, 2023][j - 16] ?? 1960, magnet: [5, 10, 18].includes(j) }))
-  const raw: { x: number; y: number; flats: number; year: number }[] = []
-  for (let i = 0; i < 300; i++) raw.push({ x: 8 * r(), y: 8 * r(), flats: int(40, 250), year: int(1960, 2006) })
-  const eras = [[2008, 2017], [2014, 2023], [2019, 2027]]
-  centers.forEach(([cx, cy], k) => { for (let i = 0; i < 40; i++) raw.push({ x: cx + 0.5 * gauss(), y: cy + 0.5 * gauss(), flats: int(150, 500), year: int(eras[k][0], eras[k][1]) }) })
-  const all = [...xy, ...centers]
-  const houses: House[] = raw.map((h, i) => {
-    const near = all.reduce((b, p, j) => (Math.hypot(p[0] - h.x, p[1] - h.y) < Math.hypot(all[b][0] - h.x, all[b][1] - h.y) ? j : b), 0)
-    // закрепление — ближайшая школа; пока она не открыта — ближайшая из старых (как дома № 107 до 2023 г. за школой № 143)
-    const old = xy.reduce((b, p, j) => (Math.hypot(p[0] - h.x, p[1] - h.y) < Math.hypot(xy[b][0] - h.x, xy[b][1] - h.y) ? j : b), 0)
-    return { id: `h${i}`, coords: at(h.x, h.y), flats: h.flats, year: h.year, school: `s${near}`, prev: near >= 16 ? `s${old}` : undefined }
-  })
-  const P = prepare(houses, schools)
-  const truth = expected(P, TRUE, YEARS)
-  const observed: Observed = {}
-  schools.forEach((s, j) => {
-    observed[s.id] = {}
-    YEARS.forEach((y, t) => {
-      if (s.openYear > y) return
-      const m = truth[j][t] // шум: пуассоновский + 3% ошибки отчётности
-      observed[s.id][y] = Math.max(0, Math.round((m + Math.sqrt(m) * gauss()) * (1 + 0.03 * gauss())))
-    })
-  })
-  return { P, observed }
-}
+const FIT = DEMO_YEARS.filter(y => y <= 2022), TEST = DEMO_YEARS.filter(y => y > 2022)
+const syntheticCity = demoCity
 
 describe('синтетический город: модель восстанавливает заложенную истину', () => {
   for (const seed of [1, 2]) {

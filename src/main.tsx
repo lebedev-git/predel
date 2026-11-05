@@ -7,10 +7,11 @@ import '@fontsource/unbounded/700.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
+import Calc from './Calc.tsx'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    {new URLSearchParams(location.search).get('view') === 'calc' ? <Calc /> : <App />}
   </StrictMode>,
 )

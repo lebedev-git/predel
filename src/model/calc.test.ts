@@ -65,7 +65,7 @@ describe('Казань: мощности к школам модели', () => {
 describe('демо-город: калькулятор на подобранных параметрах повторяет заложенную истину', () => {
   const { P, houses, schools, observed } = demoCity(1)
   const cs: CitySchool[] = schools.map(s => ({ ...s, cap: 'демо' }))
-  const model = cityBase(houses, cs, observed, DEMO_FIT, YEARS, [2026])
+  const model = cityBase(houses, cs, observed, DEMO_FIT, YEARS, [2024, 2025, 2026])
   const truth: City = { schools: cs, houses, years: YEARS, base: expected(P, TRUE, YEARS) }
   const z: Complex = { coords: at(4, 4), phases: [{ year: 2028, flats: 800 }, { year: 2030, flats: 800 }], area: 55 }
   const m = calcComplex(model, z, DEMO_FIT), tr = calcComplex(truth, z, TRUE)

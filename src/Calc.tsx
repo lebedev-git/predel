@@ -10,7 +10,9 @@ import type { LngLat } from './model/geo'
  * (150 школ, 520 тыс. квартир, мощности: точно / оценка / нет данных). Работает без интернета: карта своя, без подложки. */
 
 const YEARS = Array.from({ length: 15 }, (_, i) => 2026 + i)
-const ANCHOR = [2026] // прогноз без ЖК привязан к последнему году факта: на истории точнее среднего за 2-3 года (freeze.test.ts)
+// Прогноз без ЖК привязан к факту. Казань — последний год: школы набирают учеников и меняются, на истории это точнее
+// среднего за 2–3 года (freeze.test.ts). Демо-город — среднее за три года: там нет трендов, только шум отчётности.
+const ANCHOR: Record<'demo' | 'kazan', number[]> = { demo: [2024, 2025, 2026], kazan: [2026] }
 const n = (x: number) => Math.round(x).toLocaleString('ru-RU')
 const SHIFT_CLASS: Record<Shift, string> = { 'одна смена': 'ok', 'две смены': 'warn', 'за пределом': 'crit', 'нет данных': 'unk' }
 const CAP_HINT: Record<Cap, string> = {
@@ -54,7 +56,7 @@ export default function Calc() {
   useEffect(() => {
     const src = mode === 'demo' ? demo : kazan
     if (!src || cities[key]) return
-    const t = setTimeout(() => { const c = cityBase(src.houses, src.schools, src.observed, params, YEARS, ANCHOR); setCities(m => ({ ...m, [key]: c })) }, 30)
+    const t = setTimeout(() => { const c = cityBase(src.houses, src.schools, src.observed, params, YEARS, ANCHOR[mode]); setCities(m => ({ ...m, [key]: c })) }, 30)
     return () => clearTimeout(t)
   }, [key, demo, kazan]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -66,7 +68,7 @@ export default function Calc() {
       ...(p187 ? [{ label: 'Условный ЖК в Азино, у лицея № 187', coords: [p187[0] + 0.008, p187[1] - 0.004] as LngLat }] : [])]
   }, [mode, kazan])
 
-  const [spec, setSpec] = useState<Omit<Complex, 'coords'>>({ phases: [{ year: 2027, flats: 600 }, { year: 2029, flats: 600 }, { year: 2031, flats: 600 }], area: 55 })
+  const [spec, setSpec] = useState<Omit<Complex, 'coords'>>({ phases: [{ year: 2027, flats: 600 }, { year: 2029, flats: 600 }, { year: 2031, flats: 600 }], area: 42 }) // 42 м²: средняя квартира домов Казани 2020-х — 39–45 м² (реестр капремонта АИС «ФРТ»)
   const [pts, setPts] = useState<Record<Mode, LngLat | null>>({ demo: null, kazan: null }) // точка ЖК в каждом городе; пока не выбрана — первый пресет
   const [ownOn, setOwnOn] = useState(false)
   const [own, setOwn] = useState({ design: 1100, year: 2031 })
